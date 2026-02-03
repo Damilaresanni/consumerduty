@@ -25,7 +25,10 @@ SECRET_KEY = 'django-insecure-1pc)vmed*fs565elq%ga+-&67*4nltwtf^0cd8%4!gz2@-!wph
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '100.115.114.115',
+    'titan.tail1f5bdb.ts.net']
 
 
 # Application definition
@@ -53,6 +56,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'consumerduty.urls'
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 TEMPLATES = [
     {
@@ -118,3 +123,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [BASE_DIR / 'static' ]
