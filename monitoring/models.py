@@ -27,6 +27,12 @@ class ConsumerDutyReview(models.Model):
     notes_on_known_risks = models.TextField(null=True, blank=True)
     
     
+    risk_tolerance_assumption = models.CharField(
+        max_length=255,
+        choices=StatusLevel.choices,
+        null = True,
+        blank = True
+    )
     vulnerability_consideration = models.CharField(
         max_length=255,
         choices=VulnerableOptions.choices,
