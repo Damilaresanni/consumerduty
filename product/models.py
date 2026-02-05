@@ -37,12 +37,6 @@ class StatusLevel(models.TextChoices):
     high = "high", "High"
     
     
-
-class VulnerableOptions(models.TextChoices):
-    yes = "yes", "Yes"
-    no = "no", "No"
-    mixed = "mixed", "Mixed"
-
 class Product(BaseModel):
     product_name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
@@ -77,19 +71,7 @@ class Product(BaseModel):
         null = True,
         blank = True  
     )
-    risk_tolerance_assumption = models.CharField(
-        max_length=255,
-        choices=StatusLevel.choices,
-        null = True,
-        blank = True
-    )
     
-    vulnerability_consideration = models.CharField(
-        max_length=255,
-        choices=VulnerableOptions.choices,
-        null = True,
-        blank = True
-    )
     
     product_owner = models.CharField(max_length=255, null=True,blank=True)
     
