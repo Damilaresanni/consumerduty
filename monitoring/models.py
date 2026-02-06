@@ -1,7 +1,19 @@
 from django.db import models
 from product.models import Product
+from django.conf import settings
 
 
+
+class BaseModel(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    
+    created_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    deleted_at = models.DateTimeField(null=True, blank=True)
+    
+    class Meta:
+        abstract = True
+        
 
 class VulnerableOptions(models.TextChoices):
     yes = "yes", "Yes"
@@ -15,7 +27,8 @@ class StatusLevel(models.TextChoices):
     high = "high", "High"
     
     
-class ConsumerDutyReview(models.Model):
+    
+class ConsumerDutyReview(BaseModel):
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
@@ -42,3 +55,18 @@ class ConsumerDutyReview(models.Model):
 
     def __str__(self):
         return f"{self.product.product_name} Review"
+
+
+
+class Document(BaseModel):
+    file = models.FileField(upload_to="uploads/%y/%m/%d/")
+    uploaded_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="Uploaded_documents"
+    )
+    
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.file.name} uploaded by {self.uploaded_by}"
