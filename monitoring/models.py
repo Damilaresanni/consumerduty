@@ -15,20 +15,24 @@ class BaseModel(models.Model):
         abstract = True
         
 
-class VulnerableOptions(models.TextChoices):
-    yes = "yes", "Yes"
-    no = "no", "No"
-    mixed = "mixed", "Mixed"
+
     
-    
-class StatusLevel(models.TextChoices):
-    low = "low", "Low"
-    mid = "mid", "Mid"
-    high = "high", "High"
-    
+
     
     
 class ConsumerDutyReview(BaseModel):
+    class VulnerableOptions(models.TextChoices):
+        yes = "yes", "Yes"
+        no = "no", "No"
+        mixed = "mixed", "Mixed"
+        
+        
+     
+    class StatusLevel(models.TextChoices):
+        low = "low", "Low"
+        mid = "mid", "Mid"
+        high = "high", "High"
+    
     product = models.ForeignKey(
         Product,
         on_delete=models.CASCADE,
@@ -59,7 +63,21 @@ class ConsumerDutyReview(BaseModel):
 
 
 class Document(BaseModel):
+    class Status(models.TextChoices):
+        PENDING = "pending" , "Pending"
+        PROCCESSING = "processing", "Processing"
+        COMPLETED = "completed", "Completed"
+        FAILED = "failed", "Failed"
+        
+        
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="documents", null=True, blank=True)
+    title = models.CharField(max_length=255)    
     file = models.FileField(upload_to="uploads/%y/%m/%d/")
+    mime_type= models.CharField(max_length=100, blank=True)
+    size_bytes = models.BigIntegerField(null=True, blank=True)
+    checksum = models.CharField(max_length=128, blank=True)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    error_message = models.TextField(blank=True)
     uploaded_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
