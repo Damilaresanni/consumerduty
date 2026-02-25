@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'product',
     'governance',
-    'monitoring'
+    'monitoring',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
