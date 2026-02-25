@@ -42,8 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'product',
     'governance',
-    'monitoring',
-    'user'
+    'monitoring'
 ]
 
 MIDDLEWARE = [
@@ -130,5 +129,3 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
-
-LOGIN_URL = "/accounts/login/"

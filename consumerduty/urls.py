@@ -26,6 +26,10 @@ urlpatterns = [
     path('', include('monitoring.urls')),
     path('', include('product.urls')),
     path("accounts/", include("django.contrib.auth.urls")),
-    path("accounts/", include("user.urls"))
+    path("accounts/", include("user.urls")),
+    path('', include('monitoring.urls')),
+
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+    
 
