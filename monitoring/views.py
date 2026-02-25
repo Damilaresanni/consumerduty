@@ -37,19 +37,3 @@ def product_documents(request, product_id):
     return render(request, "documents/product_documents.html", {"product":product,"documents":documents})
 
 
-def upload_document(request):
-    if request.method == "POST":
-        form = UploadDocumentForm(request.POST, request.FILES)
-        if form.is_valid():
-            document = form.save(commit=False)
-            document.uploaded_by = request.user
-            document.save()
-            return redirect("success_page")
-        
-        else:
-            form = UploadDocumentForm()
-            
-        return render(request, "upload.html", {"form":form})  
-    
-    def upload_success(request):
-        return render(request, 'documents/success.html')  
