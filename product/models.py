@@ -22,9 +22,24 @@ class ProductType(models.TextChoices):
     LOAN = "loan" , "Loan"
     INSURANCE = "insurance", "Insurance"
     SAVINGS =  "savings", "Savings"
+    
 
+class CustomerType(models.TextChoices):
+    retail = "retail" , "Retail"
+    professional = "profesional", "Profesional"
+    mixed =  "mixed", "Mixed"
+
+
+
+class StatusLevel(models.TextChoices):
+    low = "low", "Low"
+    mid = "mid", "Mid"
+    high = "high", "High"
+    
+    
 class Product(BaseModel):
     product_name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
     product_type = models.CharField(
         max_length=20,
         choices=ProductType.choices,
@@ -42,3 +57,26 @@ class Product(BaseModel):
         blank=True,
         on_delete=models.SET_NULL
     )
+    
+    intended_consumer_type = models.CharField(
+        max_length=225,
+        choices=CustomerType.choices,
+        null = True,
+        blank = True
+    )
+    
+    financial_sophistication_level= models.CharField(
+        max_length=255,
+        choices= StatusLevel.choices ,
+        null = True,
+        blank = True  
+    )
+    
+    
+    product_owner = models.CharField(max_length=255, null=True,blank=True)
+    
+    
+    def __str__(self): 
+        return self.product_name
+    
+  
