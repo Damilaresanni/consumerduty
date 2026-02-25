@@ -1,7 +1,28 @@
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required 
+from django.contrib.auth import logout
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import UploadDocumentForm
 from .models import Document, Product
+
+# Create your views here.
+@login_required
+def homepage(request):
+    return render(request, 'dashboard.html')
+
+
+def general(request):
+    return render(request, 'forms/general.html') 
+
+@login_required
+def documents(request):
+    return render(request, 'documents.html')
+
+
+def logout_view(request):
+    logout(request)
+
 
 @login_required
 def document_list(request):
@@ -26,9 +47,7 @@ def upload_document(request):
         
     return render(request, "documents/upload.html", {"form":form})
         
-@login_required   
-def homepage(request):
-    return render(request, 'index.html')
+
 
 @login_required
 def product_documents(request, product_id):

@@ -22,6 +22,14 @@ from django.conf import settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', homepage, name='dashboard'),
     path('', include('monitoring.urls')),
-    path('', homepage, name='homepage'),
-] + static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT )
+    path('', include('product.urls')),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("accounts/", include("user.urls")),
+    path('', include('monitoring.urls')),
+
+]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+    
+
