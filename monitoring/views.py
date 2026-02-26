@@ -5,6 +5,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .forms import UploadDocumentForm
 from .models import Document, Product
+from  monitoring.models import Document
+import mimetypes
+
+# If the database field is empty, guess it
 
 # Create your views here.
 @login_required
@@ -17,7 +21,11 @@ def general(request):
 
 @login_required
 def documents(request):
-    return render(request, 'documents.html')
+    docs = Document.objects.all().order_by('-created_at')
+    context = {
+        'documents':docs,
+    }
+    return render(request, 'documents.html', context)
 
 
 def logout_view(request):
@@ -33,15 +41,17 @@ def document_list(request):
 @login_required
 def upload_document(request):
     if request.method == "POST":
+        file_obj = request.FILES['file']
         form = UploadDocumentForm(request.POST, request.FILES)
         if form.is_valid():
             document=form.save(commit=False)
             document.uploaded_by= request.user
-            document.mime_type = getattr(document.file,"content_type", "")
+            document.mime_type = file_obj.content_type
+            # document.mime_type = getattr(document.file,"content_type", "")
             document.size_bytes = document.file.size
             document.save()
             
-            return redirect("documents:list")
+            return redirect("documents")
     else:
         form = UploadDocumentForm()
         
@@ -52,7 +62,7 @@ def upload_document(request):
 @login_required
 def product_documents(request, product_id):
     product = get_object_or_404(Product,id=product_id)
-    documents = product.documents.filter(uploaded_by=request.user)
+    documents = product.documents.filter(uploaded_by=request.user) # type: ignore
     return render(request, "documents/product_documents.html", {"product":product,"documents":documents})
 
 

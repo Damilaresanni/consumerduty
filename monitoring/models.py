@@ -84,7 +84,37 @@ class Document(BaseModel):
         related_name="Uploaded_documents"
     )
     
-    uploaded_at = models.DateTimeField(auto_now_add=True)
+  
     
     def __str__(self):
         return f"{self.file.name} uploaded by {self.uploaded_by}"
+    
+    
+    
+
+class RuleBasedFinding(models.Model):
+    document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name="findings")
+    rule_name = models.CharField(max_length=255)
+    fca_rule_ref = models.CharField(max_length=255)
+    description = models.TextField()
+    severity = models.CharField(max_length=20)
+    start_char = models.IntegerField()
+    end_char = models.IntegerField()
+    snippet = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+
+
+class DocumentChunk(models.Model):
+    document = models.ForeignKey(Document, on_delete=models.CASCADE, related_name='chunks')
+    text = models.TextField()
+    index = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        ordering = ['index'] # Keeps chunks in order automatically
+
+    def __str__(self):
+        return f"Chunk {self.index} of {self.document.title}"

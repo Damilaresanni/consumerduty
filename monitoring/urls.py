@@ -2,7 +2,6 @@ from django.urls import path
 from . import views, api
 
 
-app_name = "monitoring"
 
 urlpatterns = [
     path('forms/', views.general, name='general'),
