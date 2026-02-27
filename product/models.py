@@ -30,12 +30,6 @@ class CustomerType(models.TextChoices):
     mixed =  "mixed", "Mixed"
 
 
-
-class StatusLevel(models.TextChoices):
-    low = "low", "Low"
-    mid = "mid", "Mid"
-    high = "high", "High"
-    
     
 class Product(BaseModel):
     product_name = models.CharField(max_length=255)
@@ -44,36 +38,25 @@ class Product(BaseModel):
         max_length=20,
         choices=ProductType.choices,
     )
-    status = models.CharField(
-        max_length=20,
-        choices=Status.choices,
-        default=Status.DRAFT
-    )
-    launch_date = models.DateTimeField(null=True,blank=True)
-    product_version = models.PositiveIntegerField(default=1)
-    previous_version = models.ForeignKey(
-        "self",
-        null = True,
-        blank=True,
-        on_delete=models.SET_NULL
-    )
+   
+   
     
-    intended_consumer_type = models.CharField(
-        max_length=225,
-        choices=CustomerType.choices,
-        null = True,
-        blank = True
-    )
+    # intended_consumer_type = models.CharField(
+    #     max_length=225,
+    #     choices=CustomerType.choices,
+    #     null = True,
+    #     blank = True
+    # )
     
-    financial_sophistication_level= models.CharField(
-        max_length=255,
-        choices= StatusLevel.choices ,
-        null = True,
-        blank = True  
-    )
+    # financial_sophistication_level= models.CharField(
+    #     max_length=255,
+    #     choices= StatusLevel.choices ,
+    #     null = True,
+    #     blank = True  
+    # )
     
     
-    product_owner = models.CharField(max_length=255, null=True,blank=True)
+   
     
     
     def __str__(self): 
