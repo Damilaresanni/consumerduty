@@ -3,44 +3,57 @@ Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSyste
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // Bar Chart Example
-var ctx = document.getElementById("myBarChart");
-var myLineChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ["January", "February", "March", "April", "May", "June"],
-    datasets: [{
-      label: "Revenue",
-      backgroundColor: "rgba(2,117,216,1)",
-      borderColor: "rgba(2,117,216,1)",
-      data: [4215, 5312, 6251, 7841, 9821, 14984],
-    }],
-  },
-  options: {
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'month'
-        },
-        gridLines: {
-          display: false
-        },
-        ticks: {
-          maxTicksLimit: 6
-        }
-      }],
-      yAxes: [{
-        ticks: {
-          min: 0,
-          max: 15000,
-          maxTicksLimit: 5
-        },
-        gridLines: {
-          display: true
-        }
-      }],
+// BAR CHART 1
+const ctx1 = document.getElementById('myBarChart').getContext('2d');
+
+new Chart(ctx1, {
+    type: 'bar',
+    data: {
+        labels: ['Fees', 'Clarity', 'Misleading Claims'],
+        datasets: [{
+            label: 'Findings',
+            data: [12, 19, 7],
+            backgroundColor:'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
     },
-    legend: {
-      display: false
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
     }
-  }
+});
+
+
+// BAR CHART 2
+const ctx2 = document.getElementById('myBarChart2').getContext('2d');
+
+new Chart(ctx2, {
+    type: 'bar',
+    data: {
+        labels: ['Low', 'Medium', 'High'],
+        datasets: [{
+            label: 'Severity',
+            data: [5, 10, 8, 3],
+            backgroundColor: [
+                'rgba(54, 162, 235, 0.6)',
+                'rgba(255, 206, 86, 0.6)',
+                'rgba(255, 99, 132, 0.6)'
+            ],
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
 });

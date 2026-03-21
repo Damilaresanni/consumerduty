@@ -11241,3 +11241,16 @@ body {
   font-size: 0.75rem;
   border-radius: 0.375rem !important;
 }
+
+/* #ragAnswerCard {
+    border-left: 5px solid #0dcaf0;
+} */
+
+.equal-height {
+    height: 100%;
+}
+
+.answer-header {
+    background-color: #002A5C !important;
+
+}

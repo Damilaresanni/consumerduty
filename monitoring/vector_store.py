@@ -1,6 +1,8 @@
-# documents/vector_store.py
-
+from fastembed import TextEmbedding
 from qdrant_client import QdrantClient
+import uuid
+
+
 from qdrant_client.models import (
     Distance,
     VectorParams,
@@ -8,9 +10,14 @@ from qdrant_client.models import (
 )
 from openai import OpenAI
 
-client = OpenAI()
+# client = OpenAI()
 
-# Connect to local Qdrant (or cloud)
+
+
+
+embedder = TextEmbedding()
+
+
 qdrant = QdrantClient(
     host="localhost",
     port=6333,
@@ -19,7 +26,7 @@ qdrant = QdrantClient(
 COLLECTION_NAME = "document_chunks"
 
 
-def init_collection(dim: int = 1536):
+def init_collection(dim: int = 384):
     """
     Create or recreate the vector collection.
     """
@@ -40,36 +47,34 @@ def init_collection(dim: int = 1536):
 
 
 def embed_text(text: str) -> list[float]:
-    """
-    Convert text into an embedding vector using OpenAI.
-    """
-    response = client.embeddings.create(
-        model="text-embedding-3-small",
-        input=text,
-    )
-    return response.data[0].embedding
+    
+    vector = list(embedder.embed([text]))[0]
+    return vector.tolist()
 
 
 def store_chunk_embedding(document, chunk_index: int, text: str):
-    """
-    Embed a chunk and store it in Qdrant with metadata.
-    """
+    
+    
     vector = embed_text(text)
-
-    qdrant.upsert(
-        collection_name=COLLECTION_NAME,
-        points=[
-            PointStruct(
-                id=f"{document.id}-{chunk_index}",
-                vector=vector,
-                payload={
-                    "document_id": document.id,
-                    "product_id": document.product_id,
-                    "chunk_index": chunk_index,
-                    "text": text,
-                },
-            )
-        ],
-    )
-
+    try:
+        qdrant.upsert(
+            collection_name=COLLECTION_NAME,
+            points=[
+                PointStruct(
+                    id=str(uuid.uuid4()),
+                    vector=vector,
+                    payload={
+                        "document_id": document.id,
+                        "chunk_index": chunk_index,
+                        "text": text,
+                    },
+                )
+            ],
+        )
+        print("Vector length:", len(vector))
+        print(qdrant.get_collection(COLLECTION_NAME))
+    except Exception as e:
+        print("QDRANT ERROR:", e)
+        raise
+    
     return vector

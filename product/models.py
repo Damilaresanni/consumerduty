@@ -12,11 +12,7 @@ class BaseModel(models.Model):
         abstract = True
         
         
-class Status(models.TextChoices):
-    DRAFT = "draft", "Draft"
-    ACTIVE = "active", "Active"
-    INACTIVE = "inactive", "Inactive"
-    ARCHIVED = "archived", "Archived"
+
 
 class ProductType(models.TextChoices):
     LOAN = "loan" , "Loan"

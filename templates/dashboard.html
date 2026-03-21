@@ -48,21 +48,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
-                                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fa-brands fa-product-hunt"></i></div>
-                                Product
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'products' %}">Add & view</a>
-                                    
-                                </nav>
-                            </div>
+                           
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                                Document
+                                Docs & Products
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -76,48 +65,7 @@
 
 
 
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">Login</a>
-                                            <a class="nav-link" href="register.html">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">401 Page</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
-                                        </nav>
-                                    </div>
-                                </nav>
-                            </div>
+                
                           
         
                         </div>
@@ -138,135 +86,139 @@
                         <div class="row">
                             <div class="col-xl-3 col-md-6">
                                 <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Primary Card</div>
+                                    <div class="card-body">Number of issues detected</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        <h2 id="issuesCount" class="mt-2 mb-0">0</h2>
+                                        
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
-                                <div class="card bg-warning text-white mb-4">
-                                    <div class="card-body">Warning Card</div>
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Total Chunks</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        <h2 id="chunksCount" class="mt-2 mb-0">0</h2>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
-                                <div class="card bg-success text-white mb-4">
-                                    <div class="card-body">Success Card</div>
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">Total Findings</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        <h2 id="findingsCount" class="mt-2 mb-0">0</h2>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-xl-3 col-md-6">
-                                <div class="card bg-danger text-white mb-4">
-                                    <div class="card-body">Danger Card</div>
+                                <div class="card bg-primary text-white mb-4">
+                                    <div class="card-body">--</div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small text-white stretched-link" href="#">View Details</a>
-                                        <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                        <h2 id="severityCount" class="mt-2 mb-0">0</h2>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-area me-1"></i>
-                                        Area Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas></div>
-                                </div>
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                        <i class="fas fa-chart-bar me-1"></i>
-                                        Bar Chart Example
-                                    </div>
-                                    <div class="card-body"><canvas id="myBarChart" width="100%" height="40"></canvas></div>
-                                </div>
-                                
-                            </div>
-                            <div class="col-xl-6">
-                                <div class="mb-3">
-                                <label for="formFile" class="form-label">Add Product</label>
-                             <input class="form-control" type="file" id="formFile">
-                            </div>
-                            <div class="input-group mb-3">
-                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Product type</button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
-                                <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#">Separated link</a></li>
-                            </ul>
-                            <input type="text" class="form-control" aria-label="Text input with dropdown button">
-                            </div>
-                                <select class="form-select form-select-lg mb-3" aria-label="Large select example">
-                            <option selected>Open this select menu</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
-                            </select>
-                            </div>
 
-                             <form method="POST", action="{% url 'doc_uplaod' %}"  enctype="multipart/form-data" class="col-xl-6">
-                                {% csrf_token %}
-                               <div class="mb-3"> <label class="form-label">Add Document Title</label> 
-                                <input type="text" name="title" class="form-control"> 
-                            </div> 
-                                <div class="mb-3"> <label class="form-label">Upload PDF</label> 
-                                <input type="file" name="file" accept="application/pdf" class="form-control">
-                             </div> 
-                                <button type="submit" class="btn btn-primary" >Upload</button> 
-                        </form>
-                        </div>
-                        
-                        <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                Product List
-                            </div>
-                            <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                           
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                           
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                         
-                                        </tr>
-                                        <tr>
-                                         
-                                        </tr>
-                    
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+    <!-- BAR CHART 1 -->
+   <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Findings
+            </div>
+            <div class="card-body">
+                <canvas id="myBarChart" width="100%" height="40"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- BAR CHART 2 -->
+    <div class="col-xl-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Findings by Severity (Bar Chart)
+            </div>
+            <div class="card-body">
+                <canvas id="myBarChart2" width="100%" height="40"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 mb-4 d-flex align-items-stretch">
+
+    <!-- LEFT: RAG QUERY FORM -->
+    <div class="col-xl-6 ">
+        <div class="card shadow-sm h-100">
+            <div class="card-header answer-header text-white">
+                <h5 class="mb-0">Ask a Question About This Product</h5>
+            </div>
+            <div class="mx-3">
+        <select id="product-select" class="form-select mt-4 mb-4">
+        <option value="">-- Select Product --</option>
+        {% for p in products %}
+            <option value="{{ p.id }}">{{ p.product_name }}</option>
+        {% endfor %}
+            </select>
+            </div>
+            <div class="card-body">
+                <form id="ragForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label" for="query">Your Question</label>
+                        <input type="text" id="query" class="form-control" placeholder="e.g. What fees are mentioned?">
+                    </div>
+                    <button type="button" id="askBtn" class="btn btn-primary w-100 py-2">
+                <span id="askSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <span id="askBtnText">Ask</span>
+            </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: LLM ANSWER -->
+    <div class="col-xl-6">
+        <div id="ragAnswerCard" class="card shadow-sm h-100">
+            <div class="card-header answer-header text-white">
+                <h5 class="mb-0">LLM Answer</h5>
+            </div>
+            <div class="card-body">
+                <p id="ragAnswer" class="fs-5"></p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+
+<!-- LLM FINDINGS TABLE -->
+<div class="card mb-4">
+    <div class="card-header answer-header text-white">
+        <h5>LLM Evaluation Findings</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Rule</th>
+                    <th>FCA Ref</th>
+                    <th>Severity</th>
+                    <th>Snippet</th>
+                </tr>
+            </thead>
+            <tbody id="findingsTable"></tbody>
+        </table>
+    </div>
+</div>
+
+
+<!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -290,5 +242,156 @@
         <script src="{% static 'assets/demo/chart-bar-demo.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
+        <script>
+            document.getElementById("askBtn").addEventListener("click", async function(e) {
+    const queryInput = document.getElementById("query");
+    const productSelect = document.getElementById("product-select");
+    const answerText = document.getElementById("ragAnswer");
+    const findingsTable = document.getElementById("findingsTable");
+
+    const query = queryInput.value;
+    const productId = productSelect.value; // DYNAMIC: Gets ID from the dropdown
+
+    if (!productId || !query) {
+        alert("Please select a product and enter a question.");
+        return;
+    }
+
+    // 1. Loading State
+    this.disabled = true;
+    this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Analyzing...';
+    answerText.innerText = "Processing FCA Rules...";
+    findingsTable.innerHTML = '<tr><td colspan="4" class="text-center"><div class="spinner-border text-primary"></div></td></tr>';
+
+    try {
+        const response = await fetch("/api/rag/query/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+            },
+            body: JSON.stringify({ query, product_id: productId })
+        });
+
+        const data = await response.json();
+
+        // 2. Display the Answer
+        answerText.innerText = data.answer;
+
+        // 3. Populate the Findings Table
+        findingsTable.innerHTML = ""; 
+        data.findings.forEach(f => {
+            const row = `
+                <tr>
+                    <td><strong>${f.rule_name}</strong></td>
+                    <td><span class="badge bg-secondary">${f.fca_rule_ref}</span></td>
+                    <td><span class="badge ${getSeverityClass(f.severity)}">${f.severity}</span></td>
+                    <td class="small text-muted"><em>"${f.snippet}"</em></td>
+                </tr>`;
+            findingsTable.insertAdjacentHTML('beforeend', row);
+        });
+
+    } catch (error) {
+        answerText.innerText = "Error: Could not reach the AI server.";
+    } finally {
+        this.disabled = false;
+        this.innerText = "Ask";
+    }
+});
+
+
+   // Show answer
+    document.getElementById("ragAnswerCard").style.display = "block";
+    document.getElementById("ragAnswer").innerText = data.answer;
+
+    // --------------------------
+    // AREA CHART (Chunk relevance)
+    // --------------------------
+    const areaCtx = document.getElementById("myAreaChart");
+    new Chart(areaCtx, {
+        type: "line",
+        data: {
+            labels: data.chunks.map(c => "Chunk " + c.chunk_index),
+            datasets: [{
+                label: "Relevance Score",
+                data: data.chunks.map(c => c.score),
+                fill: true,
+                borderColor: "blue",
+                backgroundColor: "rgba(0, 123, 255, 0.2)"
+            }]
+        }
+    });
+
+    // --------------------------
+    // BAR CHART (spaCy severity)
+    // --------------------------
+    const severityCounts = {
+        high: data.findings.filter(f => f.severity === "high").length,
+        medium: data.findings.filter(f => f.severity === "medium").length,
+        low: data.findings.filter(f => f.severity === "low").length,
+    };
+
+    const barCtx = document.getElementById("myBarChart");
+    new Chart(barCtx, {
+        type: "bar",
+        data: {
+            labels: ["High", "Medium", "Low"],
+            datasets: [{
+                label: "Findings",
+                data: [severityCounts.high, severityCounts.medium, severityCounts.low],
+                backgroundColor: ["red", "orange", "green"]
+            }]
+        }
+    });
+
+    // --------------------------
+    // SPACY FINDINGS TABLE
+    // --------------------------
+    const findingsTable = document.getElementById("findingsTable");
+    findingsTable.innerHTML = "";
+    data.findings.forEach(f => {
+        findingsTable.innerHTML += `
+            <tr>
+                <td>${f.rule_name}</td>
+                <td>${f.fca_rule_ref}</td>
+                <td>${f.severity}</td>
+                <td>${f.snippet}</td>
+            </tr>
+        `;
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
     </body>
 </html>

@@ -48,21 +48,10 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard
                             </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fa-brands fa-product-hunt"></i></div>
-                                Pdoduct
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'products' %}">Add & view</a>
-                                    
-                                </nav>
-                            </div>
+                    
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                                Document
+                                Docs & Products
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
                             <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
@@ -76,48 +65,6 @@
 
 
 
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                                Layouts
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="layout-static.html">Static Navigation</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Light Sidenav</a>
-                                </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                                <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                                Pages
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                        Authentication
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="login.html">Login</a>
-                                            <a class="nav-link" href="register.html">Register</a>
-                                            <a class="nav-link" href="password.html">Forgot Password</a>
-                                        </nav>
-                                    </div>
-                                    <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                        Error
-                                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                                    </a>
-                                    <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                        <nav class="sb-sidenav-menu-nested nav">
-                                            <a class="nav-link" href="401.html">401 Page</a>
-                                            <a class="nav-link" href="404.html">404 Page</a>
-                                            <a class="nav-link" href="500.html">500 Page</a>
-                                        </nav>
-                                    </div>
-                                </nav>
-                            </div>
                             
                         </div>
                     </div>
@@ -135,55 +82,182 @@
                             <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
                             <li class="breadcrumb-item active"></li>
                         </ol>
-                        <div class="card mb-4">
-                            <div class="card-body">
-                                DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                                .
-                                <div class="mb-3">
-                                <label for="formFile" class="form-label">Default file input example</label>
-                             <input class="form-control" type="file" id="formFile">
-                            </div>
-                            <div class="input-group mb-3">
-                            
-                            </div>
+                        <div class="row mt-4 mb-5 d-flex align-items-stretch">
+
+    <!-- LEFT: DOCUMENT FORM -->
+    <div class="col-xl-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header answer-header text-white">
+                <h5 class="mb-0">Add Document</h5>
+            </div>
+
+            <div class="card-body">
+                <form id="documentForm" enctype="multipart/form-data">
+                        {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Document Name</label>
+                        <input type="text" class="form-control" name="title" placeholder="e.g. Terms & Conditions">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Upload PDF</label>
+                        <input type="file" class="form-control" name="file">
+                    </div>
+                   
+
+                    <!-- OPTIONAL: Link document to product -->
+                    <div class="mb-3">
+                        <label class="form-label">Assign to Product</label>
+                        <select class="form-select" name="product_id">
+                            <option value="">-- Select Product --</option>
+                            {% for p in products %}
+                                <option value="{{ p.id }}">{{ p.product_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                   <button type="submit" id="submitBtn" class="btn btn-primary w-100">
+                        <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                        <span id="btnText">Upload & Analyze</span>
+                    </button>
+                    
+                </form>
+                <div class="progress mt-3" style="height: 15px; display:none;" id="uploadProgressWrapper">
+    <div class="progress-bar bg-primary progress-bar-striped progress-bar-animated" 
+         id="uploadProgress" 
+         role="progressbar" 
+         style="width: 0%;" 
+         aria-valuenow="0" 
+         aria-valuemin="0" 
+         aria-valuemax="100">
+    </div>
+</div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT: PRODUCT FORM -->
+    <div class="col-xl-6">
+        <div class="card shadow-sm h-100">
+            <div class="card-header answer-header text-white">
+                <h5 class="mb-0">Add Product</h5>
+            </div>
+
+            <div class="card-body">
+                <form id="productForm">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" class="form-control" name="product_name" placeholder="e.g. Investment ISA">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Product Type</label>
+                        <select class="form-select" name="product_type">
+                            <option value="">-- Select Type --</option>
+                            {% for value, label in product_types %}
+                                <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Create Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+                              <div class="card mb-4">
+                            <div class="card-body d-flex flex-column align-items-center">
+                                  <div> <p>Status: <span id="status">{{ document.status }}</span></p>
+                                     <div id="spinner" class="spinner-border text-primary" role="status" style="display: none;"> 
+                                        <span class="visually-hidden">Processing...</span> 
+                                    </div> 
+                                </div>
                         </div>
                         </div>
                         <div class="card mb-4">
-                            <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                All products
-                            </div>
-                            <div class="card-body">
-                <table id=datatablesSimple >
-                <thead>
-                    <tr>
-                    <th>Title</th>
-                    <th>MIME Type</th>
-                    <th>Size</th>
-                    <th>Status</th>
+    <div class="card-header bg-dark text-white">
+        <h5 class="mb-0">Documents</h5>
+    </div>
+
+    <div class="card-body">
+        <table class="table table-striped align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Product</th>
                     <th>Uploaded</th>
+                    <th style="width: 150px;">Actions</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="documentsTable">
                 {% for doc in documents %}
-                <tr>
+                <tr data-id="{{ doc.id }}">
                     <td>{{ doc.title }}</td>
-                    <td>{{ doc.mime_type }}</td>
-                    <td>{{ doc.size_bytes|floatformat:0 }} bytes</td>
+                    <td>{{ doc.product.product_name|default:"—" }}</td>
+                    <td>{{ doc.created_at|date:"Y-m-d H:i" }}</td>
                     <td>
-                        <span class="badge bg-{% if doc.status == 'completed' %}success{% elif doc.status == 'processing' %}warning{% else %}secondary{% endif %}">
-                            {{ doc.status }}
-                        </span>
+                        <!-- <button class="btn btn-sm btn-primary edit-doc-btn" data-id="{{ doc.id }}">Edit</button> -->
+                        <button class="btn btn-sm btn-danger delete-doc-btn" data-id="{{ doc.id }}">Delete</button>
                     </td>
-                    <td>{{ doc.created_at }}</td>
                 </tr>
                 {% endfor %}
-                        </tbody>
-                        </table>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" id="editProductModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-                            </div>
-                        </div>
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title">Edit Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        <form id="editProductForm">
+            <input type="hidden" name="id">
+
+            <div class="mb-3">
+                <label class="form-label">Product Name</label>
+                <input type="text" class="form-control" name="product_name">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" name="description"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Product Type</label>
+                <select class="form-select" name="product_type">
+                    {% for value, label in product_types %}
+                        <option value="{{ value }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" id="saveProductBtn">Save</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -204,5 +278,271 @@
         <script src="{% static 'js/scripts.js' %}"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
+        <script src="{% static 'js/document_status.js' %}"></script> 
+        <script> const docId = "{{ document.id }}"; </script>
+        <script>
+//
+// PRODUCT FORM AJAX
+//
+document.getElementById("productForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+
+    const response = await fetch("/api/products/create/", {
+        method: "POST",
+        body: formData
+    });
+
+    const data = await response.json();
+
+    if (response.status !== 201) {
+        alert("Error creating product");
+        return;
+    }
+
+    // Success message
+    alert("Product created successfully!");
+
+    // 1. Clear the form
+    this.reset();
+
+    // 2. Add to product dropdown
+    const productSelect = document.querySelector("select[name='product_id']");
+    productSelect.innerHTML += `<option value="${data.id}">${data.product_name}</option>`;
+
+    // 3. Add to product table
+    const table = document.getElementById("productsTable");
+    table.innerHTML += `
+        <tr data-id="${data.id}">
+            <td>${data.product_name}</td>
+            <td>${data.description || "—"}</td>
+            <td>${data.product_type}</td>
+            <td>
+             <button class="btn btn-sm btn-primary edit-product-btn" data-id="${data.id}">Edit</button> 
+                <button class="btn btn-sm btn-danger delete-product-btn" data-id="${data.id}">Delete</button>
+            </td>
+        </tr>
+    `;
+});
+
+
+
+//
+// DOCUMENT FORM AJAX
+//
+
+
+
+
+/**
+ * Standard Django CSRF Token helper.
+ * Essential for POST requests to your /api/ documents/upload/ endpoint.
+ */
+function getCSRFToken() {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            // Check if this cookie string begins with 'csrftoken='
+            if (cookie.substring(0, 10) === ('csrftoken=')) {
+                cookieValue = decodeURIComponent(cookie.substring(10));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function pollTaskStatus(taskId) {
+    const progressBar = document.getElementById("uploadProgress");
+    const btnText = document.getElementById("btnText");
+
+    const interval = setInterval(() => {
+        fetch(`/api/tasks/status/${taskId}/`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'SUCCESS') {
+                    clearInterval(interval);
+                    progressBar.style.width = "100%";
+                    progressBar.classList.add("bg-success");
+                    btnText.textContent = "Analysis Complete!";
+                    setTimeout(() => location.reload(), 1000); // Reload after a second
+                } else if (data.status === 'FAILURE') {
+                    clearInterval(interval);
+                    alert("NLP Analysis failed. Check logs.");
+                    location.reload();
+                } else {
+                    // Still processing
+                    btnText.textContent = "NLP Analyzing Compliance...";
+                    progressBar.classList.add("progress-bar-animated", "progress-bar-striped");
+                }
+            })
+            .catch(error => console.error('Polling error:', error));
+    }, 2000);
+}
+
+/**
+ * Main Upload Handler
+ * Attaches a single event listener to the form to prevent double-processing.
+ */
+document.getElementById("documentForm").addEventListener("submit", function(e) {
+    // 1. Prevent the default browser form submission
+    e.preventDefault();
+
+    // 2. UI Elements for feedback
+    const submitBtn = document.getElementById("submitBtn");
+    const btnSpinner = document.getElementById("btnSpinner");
+    const btnText = document.getElementById("btnText");
+    const progressWrapper = document.getElementById("uploadProgressWrapper");
+    const progressBar = document.getElementById("uploadProgress");
+
+    // 3. Enter Loading State: Disable button to block duplicate clicks
+    submitBtn.disabled = true;
+    if (btnSpinner) btnSpinner.classList.remove("d-none");
+    if (btnText) btnText.textContent = "Uploading & Analyzing...";
+    if (progressWrapper) progressWrapper.style.display = "block";
+
+    // 4. Prepare Data
+    const formData = new FormData(this);
+    const xhr = new XMLHttpRequest();
+    
+    // Ensure this matches your urls.py path
+    xhr.open("POST", "/api/documents/upload/");
+    
+    // 5. Set Security Headers
+    const csrftoken = getCSRFToken();
+    if (csrftoken) {
+        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+    }
+    xhr.withCredentials = true;
+
+    // 6. Track Upload Progress (Visual feedback for larger financial docs)
+  xhr.upload.addEventListener("progress", function(e) {
+        if (e.lengthComputable) {
+            const percent = (e.loaded / e.total) * 100;
+            progressBar.style.width = percent + "%";
+            if (percent === 100) {
+                btnText.textContent = "Processing on Server...";
+            }
+        }
+    });
+
+    // 7. Handle Successful/Failed Server Response
+    xhr.onload = function() {
+        const progressBar = document.getElementById("uploadProgress");
+        progressBar.classList.replace("bg-primary", "bg-info"); 
+        progressBar.textContent = "Analyzing Compliance...";
+        if (xhr.status === 201) {
+
+            // Success: Product document is registered in DB
+            const data = JSON.parse(xhr.responseText)
+            // alert("Document uploaded successfully!");
+            if (data.task_id){
+                pollTaskStatus(data.task_id)
+            }else{
+                alert("Document uploaded successfully!")
+                location.reload();
+            }
+        } else {
+            // Error: Re-enable UI so user can correct the form
+         alert("Upload failed. Error: " + xhr.statusText);
+            location.reload();
+        }
+    };
+
+    // 8. Handle Network Failures (e.g., lost connection)
+    xhr.onerror = function() {
+        submitBtn.disabled = false;
+        if (btnSpinner) btnSpinner.classList.add("d-none");
+        if (btnText) btnText.textContent = "Upload & Analyze";
+        alert("Network error: Please check your connection and try again.");
+    };
+
+    // 9. Send the request
+    xhr.send(formData);
+});
+
+
+
+</script>
+<script>
+// Function to get the LATEST cookie value
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+document.addEventListener("click", async function(e) {
+    if (e.target.classList.contains("delete-doc-btn")) {
+        const id = e.target.dataset.id;
+        if (!confirm("Delete this document?")) return;
+
+        try {
+            const response = await fetch(`/api/documents/${id}/delete/`, { 
+                method: "DELETE",
+                headers: {
+                    // Pulling directly from cookie ensures it is the most current
+                    "X-CSRFToken": getCookie('csrftoken'), 
+                    "Content-Type": "application/json"
+                }
+            });
+
+            if (response.ok) {
+                document.querySelector(`tr[data-id="${id}"]`).remove();
+            } else if (response.status === 403) {
+                alert("Security error: Please refresh the page and try again.");
+            }
+        } catch (err) {
+            console.error("Connection error", err);
+        }
+    }
+});
+</script>
+<script>
+document.addEventListener("click", async function(e) {
+    if (e.target.classList.contains("edit-doc-btn")) {
+        const id = e.target.dataset.id;
+
+        const res = await fetch(`/api/documents/${id}/`);
+        const doc = await res.json();
+
+        const form = document.getElementById("editProductForm");
+        form.id.value = doc.product.id;
+        form.product_name.value = doc.product.product_name;
+        form.description.value = doc.product.description;
+        form.product_type.value = doc.product.product_type;
+
+        new bootstrap.Modal(document.getElementById("editProductModal")).show();
+    }
+});
+
+document.getElementById("saveProductBtn").addEventListener("click", async function() {
+    const form = document.getElementById("editProductForm");
+    const id = form.id.value;
+
+    const formData = new FormData(form);
+
+    await fetch(`/api/products/${id}/update/`, {
+        method: "POST",
+        body: formData
+    });
+
+    location.reload();
+});
+</script>
+
+
     </body>
 </html>

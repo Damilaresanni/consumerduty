@@ -1,11 +1,12 @@
 import spacy
-from spacy.matcher import Matcher, PhraseMatcher
+from functools import lru_cache
+from spacy.matcher import PhraseMatcher
 
-nlp = spacy.load("en_core_web_sm")
 
-# -----------------------------
-# FCA RULE DEFINITIONS
-# -----------------------------
+@lru_cache(maxsize=1)
+def get_nlp():
+    return spacy.load("en_core_web_sm")
+
 
 FCA_RULES = [
     {
@@ -32,33 +33,46 @@ FCA_RULES = [
 ]
 
 
+def build_phrase_matcher():
+    nlp = get_nlp()  
 
-matcher = Matcher(nlp.vocab)
-phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
+    phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 
-for rule in FCA_RULES:
-    patterns = [nlp.make_doc(k) for k in rule["keywords"]]
-    phrase_matcher.add(rule["name"], patterns)
-    
-    
-def run_spacy_rules(text: str):
-    doc = nlp(text)
-    findings = []
-    
     for rule in FCA_RULES:
-        matches = phrase_matcher(doc, as_spans=True)
-        for span in matches:
-            findings.append({
-                "rule_name": rule["name"],
-                "fca_ref": rule["fca_ref"],
-                "severity": rule["severity"],
-                "description": rule["description"],
-                "start":span.start_char,
-                "end":span.end_char,
-                "snippet":span.text,
-            })
-            
+        nlp.vocab.strings.add(rule["name"])
+
+        patterns = [nlp.make_doc(k) for k in rule["keywords"]]
+        phrase_matcher.add(rule["name"], patterns)
+
+    return phrase_matcher
+
+
+RULE_MAP = {r["name"]: r for r in FCA_RULES}
+
+
+def run_spacy_rules(text: str):
+    nlp = get_nlp()  
+    doc = nlp(text)
+
+    phrase_matcher = build_phrase_matcher()
+
+    findings = []
+    matches = phrase_matcher(doc)
+
+    for match_id, start, end in matches:
+        span = doc[start:end]
+        rule_name = nlp.vocab.strings[match_id]
+
+        rule = RULE_MAP[rule_name]
+
+        findings.append({
+            "rule_name": rule["name"],
+            "fca_ref": rule["fca_ref"],
+            "severity": rule["severity"],
+            "description": rule["description"],
+            "start": span.start_char,
+            "end": span.end_char,
+            "snippet": span.text,
+        })
+
     return findings
-
-
-
