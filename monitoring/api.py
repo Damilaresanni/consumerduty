@@ -155,9 +155,15 @@ def rag_with_findings(request):
     if not query:
         return Response({"error": "Query is required"}, status=400)
     
-    chunks = search_similar_chunks(query, product_id=product_id, top_k=5)
+    if not product_id:
+        return Response({"error": "product_id is required"}, status=400)
+    
+    chunks = search_similar_chunks(query, product_id=product_id, top_k=10)
     
     doc_ids = {c["document_id"] for c in chunks} 
+    
+    if not chunks:
+        return Response({"answer": "No relevant data found", "chunks": [], "findings": []})
     
     findings = RuleBasedFinding.objects.filter(document_id__in =doc_ids)
     

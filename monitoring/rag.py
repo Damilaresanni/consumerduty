@@ -15,7 +15,9 @@ qdrant = QdrantClient(host="localhost", port=6333)
 COLLECTION_NAME = "document_chunks"
 
 
-def search_similar_chunks(query:str,product_id: int ,top_k: int= 5,):
+
+
+def search_similar_chunks(query:str,product_id: int ,top_k: int= 10,):
     vector = list(embedder.embed([query]))[0]
                   
     results = qdrant.query_points(
@@ -39,11 +41,35 @@ def search_similar_chunks(query:str,product_id: int ,top_k: int= 5,):
         for point in results.points
     ]
     
-    
+def rerank_chunks(query, chunks):
+    query_words = set(query.lower().split())
+
+    def score(chunk):
+        words = set(chunk["text"].lower().split())
+        return len(query_words & words)
+
+    return sorted(chunks, key=score, reverse=True)
+
+def filter_findings(query, findings):
+    query_words = set(query.lower().split())
+
+    filtered = []
+    for f in findings:
+        text = (f.snippet or "").lower()
+        if any(word in text for word in query_words):
+            filtered.append(f)
+
+    return filtered[:5]
+  
 
 def build_prompt(query, chunks, findings):
+    
+    chunks = rerank_chunks(query, chunks)
+    
+    findings = filter_findings(query, findings)
+    
     chunk_text = "\n\n".join(
-        f"[Chunk {c['chunk_index']}] {c['text']}" for c in chunks
+        f"[Chunk {c['chunk_index']}]\n{c['text']}" for c in chunks
     )
 
     findings_text = "\n".join(
@@ -52,18 +78,23 @@ def build_prompt(query, chunks, findings):
     )
 
     return f"""
-You are an FCA Consumer Duty assistant.
+You are an FCA Consumer Duty compliance assistant.
+
+Instructions:
+- Use ONLY the provided context
+- If the answer is not clearly supported, say "Not enough information"
+- Be precise and reference chunks when relevant
 
 User question:
 {query}
 
-Relevant document chunks:
+Context:
 {chunk_text}
 
-Relevant FCA findings:
+Compliance findings:
 {findings_text}
 
-Answer the question using ONLY the information above.
+Answer:
 """
 
 
