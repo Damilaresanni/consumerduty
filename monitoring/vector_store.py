@@ -12,24 +12,24 @@ from openai import OpenAI
 
 # client = OpenAI()
 
-
-
-
 embedder = TextEmbedding()
 
 
-qdrant = QdrantClient(
-    host="localhost",
-    port=6333,
-)
+
+
+def get_qdrant():
+    client = QdrantClient(host="localhost", port=6333)
+    client.get_collections()  
+    return client
+
 
 COLLECTION_NAME = "document_chunks"
 
 
 def init_collection(dim: int = 384):
-    """
-    Create or recreate the vector collection.
-    """
+  
+    
+    qdrant = get_qdrant()
     collections = qdrant.get_collections().collections
     existing = [c.name for c in collections]
 
@@ -43,7 +43,7 @@ def init_collection(dim: int = 384):
         )
         print("Vector DB collection created.")
     else:
-        print("Vector DB collection already exists.")
+       return print("Vector DB collection already exists.")
 
 
 def embed_text(text: str) -> list[float]:
@@ -54,7 +54,7 @@ def embed_text(text: str) -> list[float]:
 
 def store_chunk_embedding(document, chunk_index: int, text: str):
     
-    
+    qdrant = get_qdrant()
     vector = embed_text(text)
     try:
         qdrant.upsert(

@@ -1,356 +1,475 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Compliance Dashboard</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
-        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    </head>
-    <body class="sb-nav-fixed">
-        <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-            <!-- Navbar Brand-->
-            <a class="navbar-brand ps-3" href="index.html">Compliance Tool</a>
-            <!-- Sidebar Toggle-->
-            <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            <!-- Navbar Search-->
-            <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Compliance Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="index.html">Compliance Tool</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="fas fa-bars"></i></button>
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+            <div class="input-group">
+                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..."
+                    aria-describedby="btnNavbarSearch" />
+                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
+                        class="fas fa-search"></i></button>
+            </div>
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">Settings</a></li>
+                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li><a class="dropdown-item" href="#!">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" href="{% url 'dashboard' %}">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse"
+                            data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                            <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
+                            Docs & Products
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="{% url 'documents' %}">Upload & View</a>
+                            </nav>
+                        </div>
+
+
+
+
+
+
+
+
+
+                    </div>
                 </div>
-            </form>
-            <!-- Navbar-->
-            <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#!">Settings</a></li>
-                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                        <li><hr class="dropdown-divider" /></li>
-                        <li><a class="dropdown-item" href="#!">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-        <div id="layoutSidenav">
-            <div id="layoutSidenav_nav">
-                <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
-                    <div class="sb-sidenav-menu">
-                        <div class="nav">
-                            <div class="sb-sidenav-menu-heading">Core</div>
-                            <a class="nav-link" href="{% url 'dashboard' %}">
-                                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                                Dashboard
-                            </a>
-                           
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                                <div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
-                                Docs & Products
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="{% url 'documents' %}">Upload & View</a>
-                                </nav>
-                            </div>
-                        
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    Start Bootstrap
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">FCA Compliance Monitoring</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">Number of issues detected</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <h2 id="issuesCount" class="mt-2 mb-0">0</h2>
 
-
-
-
-
-                
-                          
-        
-                        </div>
-                    </div>
-                    <div class="sb-sidenav-footer">
-                        <div class="small">Logged in as:</div>
-                        Start Bootstrap
-                    </div>
-                </nav>
-            </div>
-            <div id="layoutSidenav_content">
-                <main>
-                    <div class="container-fluid px-4">
-                        <h1 class="mt-4">FCA Compliance Monitoring</h1>
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active">Dashboard</li>
-                        </ol>
-                        <div class="row">
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Number of issues detected</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <h2 id="issuesCount" class="mt-2 mb-0">0</h2>
-                                        
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Total Chunks</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <h2 id="chunksCount" class="mt-2 mb-0">0</h2>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">Total Findings</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <h2 id="findingsCount" class="mt-2 mb-0">0</h2>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-xl-3 col-md-6">
-                                <div class="card bg-primary text-white mb-4">
-                                    <div class="card-body">--</div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <h2 id="severityCount" class="mt-2 mb-0">0</h2>
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-
-    <!-- BAR CHART 1 -->
-   <div class="col-xl-6">
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-chart-bar me-1"></i>
-                Findings
-            </div>
-            <div class="card-body">
-                <canvas id="myBarChart" width="100%" height="40"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <!-- BAR CHART 2 -->
-    <div class="col-xl-6">
-        <div class="card mb-4">
-            <div class="card-header">
-                <i class="fas fa-chart-bar me-1"></i>
-                Findings by Severity (Bar Chart)
-            </div>
-            <div class="card-body">
-                <canvas id="myBarChart2" width="100%" height="40"></canvas>
-            </div>
-        </div>
-    </div>
-
-    <div class="row mt-4 mb-4 d-flex align-items-stretch">
-
-    <!-- LEFT: RAG QUERY FORM -->
-    <div class="col-xl-6 ">
-        <div class="card shadow-sm h-100">
-            <div class="card-header answer-header text-white">
-                <h5 class="mb-0">Ask a Question About This Product</h5>
-            </div>
-            <div class="mx-3">
-        <select id="product-select" class="form-select mt-4 mb-4">
-        <option value="">-- Select Product --</option>
-        {% for p in products %}
-            <option value="{{ p.id }}">{{ p.product_name }}</option>
-        {% endfor %}
-            </select>
-            </div>
-            <div class="card-body">
-                <form id="ragForm">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label" for="query">Your Question</label>
-                        <input type="text" id="query" class="form-control" placeholder="e.g. What fees are mentioned?">
-                    </div>
-                    <button type="button" id="askBtn" class="btn btn-primary w-100 py-2">
-                <span id="askSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
-                <span id="askBtnText">Ask</span>
-            </button>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- RIGHT: LLM ANSWER -->
-    <div class="col-xl-6">
-        <div id="ragAnswerCard" class="card shadow-sm h-100">
-            <div class="card-header answer-header text-white">
-                <h5 class="mb-0">LLM Answer</h5>
-            </div>
-            <div class="card-body">
-                <p id="ragAnswer" class="fs-5"></p>
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
-</div>
-
-<!-- LLM FINDINGS TABLE -->
-<div class="card mb-4">
-    <div class="card-header answer-header text-white">
-        <h5>LLM Evaluation Findings</h5>
-    </div>
-    <div class="card-body">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Rule</th>
-                    <th>FCA Ref</th>
-                    <th>Severity</th>
-                    <th>Snippet</th>
-                </tr>
-            </thead>
-            <tbody id="findingsTable"></tbody>
-        </table>
-    </div>
-</div>
-
-
-<!-- CHART.JS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-                    </div>
-                </main>
-                <footer class="py-4 bg-light mt-auto">
-                    <div class="container-fluid px-4">
-                        <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">Total Chunks</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <h2 id="chunksCount" class="mt-2 mb-0">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">Total Findings</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <h2 id="findingsCount" class="mt-2 mb-0">0</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">--</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <h2 id="severityCount" class="mt-2 mb-0">0</h2>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </footer>
-            </div>
+                    <div class="row">
+
+                     
+
+                        <div class="row mt-4 mb-4 d-flex align-items-stretch">
+
+                            <div class="col-xl-6 mb-4">
+                                <input type="hidden" id="current-doc-id" value="">
+                                <div class="card shadow-sm h-100">
+                                    <div
+                                        class="card-header answer-header text-white d-flex justify-content-between align-items-center py-2">
+                                        <h5 class="mb-0">Query</h5>
+
+                                    </div>
+
+                                    <div class="card-body d-flex flex-column">
+                                        <div class="row g-2 mb-3">
+                                            <div class="col-6">
+                                                <select id="product-select" class="form-select form-select-sm"
+                                                    onchange="filterDocuments()">
+                                                    <option value="">-- Product --</option>
+                                                    {% for p in products %}
+                                                    <option value="{{ p.id }}"
+                                                        data-docs='[{"id": "", "title": "-- Document --"}{% for doc in p.documents.all %}, {"id": "{{ doc.id }}", "title": "{{ doc.title|escapejs }}"}{% endfor %}]'>
+                                                        {{ p.product_name }}
+                                                    </option>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                            <div class="col-6">
+                                                <select id="document-select" class="form-select form-select-sm" disabled
+                                                    onchange="updateHiddenId(this.value)">
+                                                    <option value="">-- Document --</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <form id="ragForm" class="mt-auto">
+                                            {% csrf_token %}
+                                            <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text">Question</span>
+                                                <input type="text" id="query" class="form-control"
+                                                    placeholder="Ask about compliance...">
+                                            </div>
+
+                                            <button type="button" id="askBtn" class="btn btn-primary btn-sm w-100">
+                                                <span id="askSpinner"
+                                                    class="spinner-border spinner-border-sm d-none"></span>
+                                                <span id="askBtnText">Analyze Document</span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6 mb-4">
+                                <div id="ragAnswerCard" class="card shadow-sm h-100">
+                                    <div class="card-header answer-header text-white py-2">
+                                        <h5 class="mb-0">LLM Analysis Output</h5>
+                                    </div>
+                                    <div class="card-body overflow-auto" style="max-height: 300px;">
+                                        <p id="ragAnswer" class="text-muted italic">Awaiting your query...</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- LLM FINDINGS TABLE -->
+                        <div class="card mb-4">
+                            <div class="card-header answer-header text-white">
+                                <h5>LLM Evaluation Findings</h5>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Rule</th>
+                                            <th>FCA Ref</th>
+                                            <th>Severity</th>
+                                            <th>Snippet</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="findingsTable"></tbody>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <!-- CHART.JS -->
+                        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                    </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="{% static 'js/scripts.js' %}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="{%  static 'assets/demo/chart-area-demo.js' %}"></script>
-        <script src="{% static 'assets/demo/chart-bar-demo.js' %}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
-        <script>
-            document.getElementById("askBtn").addEventListener("click", async function(e) {
-    const queryInput = document.getElementById("query");
-    const productSelect = document.getElementById("product-select");
-    const answerText = document.getElementById("ragAnswer");
-    const findingsTable = document.getElementById("findingsTable");
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="{%  static 'assets/demo/chart-area-demo.js' %}"></script>
+    <script src="{% static 'assets/demo/chart-bar-demo.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js"
+        crossorigin="anonymous"></script>
+    <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+    <script>
+        function filterDocuments() {
+            const productSelect = document.getElementById('product-select');
+            const docSelect = document.getElementById('document-select');
+            const hiddenInput = document.getElementById('current-doc-id');
 
-    const query = queryInput.value;
-    const productId = productSelect.value; // DYNAMIC: Gets ID from the dropdown
+            // 1. Get the selected option
+            const selectedOption = productSelect.options[productSelect.selectedIndex];
 
-    if (!productId || !query) {
-        alert("Please select a product and enter a question.");
-        return;
-    }
+            // 2. Clear previous state
+            docSelect.innerHTML = '<option value="">-- Document --</option>';
+            hiddenInput.value = "";
 
-    // 1. Loading State
-    this.disabled = true;
-    this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Analyzing...';
-    answerText.innerText = "Processing FCA Rules...";
-    findingsTable.innerHTML = '<tr><td colspan="4" class="text-center"><div class="spinner-border text-primary"></div></td></tr>';
+            if (!selectedOption || !selectedOption.value) {
+                docSelect.disabled = true;
+                return;
+            }
 
-    try {
-        const response = await fetch("/api/rag/query/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
-            },
-            body: JSON.stringify({ query, product_id: productId })
-        });
+            try {
+                // 3. Parse the data
+                const rawData = selectedOption.getAttribute('data-docs');
+                console.log("Parsing data for product:", selectedOption.value, rawData);
+                const documents = JSON.parse(rawData);
 
-        const data = await response.json();
+                // 4. Populate
+                documents.forEach(doc => {
+                    const opt = document.createElement('option');
+                    opt.value = doc.id;
+                    opt.textContent = doc.title;
+                    docSelect.appendChild(opt);
+                });
 
-        // 2. Display the Answer
-        answerText.innerText = data.answer;
+                // 5. UNLOCK the dropdown
+                docSelect.disabled = false;
+                console.log("Document dropdown unlocked!");
 
-        // 3. Populate the Findings Table
-        findingsTable.innerHTML = ""; 
-        data.findings.forEach(f => {
-            const row = `
+            } catch (e) {
+                console.error("JSON Parse Error! Check your document titles for special characters.", e);
+                docSelect.disabled = true;
+                docSelect.innerHTML = '<option value="">Error loading docs</option>';
+            }
+        }
+
+
+        function updateHiddenId(docId) {
+            console.log("Document Selected! ID is now:", docId);
+            document.getElementById('current-doc-id').value = docId;
+        }
+
+
+        function getSeverityClass(severity) {
+            switch ((severity || "").toLowerCase()) {
+                case "high":
+                    return "bg-danger";
+                case "medium":
+                    return "bg-warning text-dark";
+                case "low":
+                    return "bg-success";
+                default:
+                    return "bg-secondary";
+            }
+        }
+
+        document.getElementById("askBtn").addEventListener("click", async function (e) {
+            e.preventDefault();
+            const queryInput = document.getElementById("query");
+            const productSelect = document.getElementById("product-select");
+            const answerText = document.getElementById("ragAnswer");
+            const findingsTable = document.getElementById("findingsTable");
+            const documentId = document.getElementById("document-select").value;
+            const issuesCountEl = document.getElementById("issuesCount");
+            const chunksCountEl = document.getElementById("chunksCount");
+            const findingsCountEl = document.getElementById("findingsCount");
+            const severityCountEl = document.getElementById("severityCount");
+
+            // Debug: This should now show the actual number in your console
+            console.log("Current Document ID:", documentId);
+
+            const query = queryInput.value;
+            const productId = productSelect.value; // DYNAMIC: Gets ID from the dropdown
+
+
+            if (!productId) {
+                alert("Please select a product.");
+                return;
+            }
+
+
+            if (!documentId) {
+                alert("Please select a specific document.");
+                return;
+            }
+
+            if (!query || query.trim() === "") {
+                alert("Please enter a question.");
+                return;
+            }
+
+
+
+
+
+
+
+
+            // 1. Loading State
+            this.disabled = true;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Analyzing...';
+            answerText.innerText = "Processing FCA Rules...";
+            findingsTable.innerHTML = '<tr><td colspan="4" class="text-center"><div class="spinner-border text-primary"></div></td></tr>';
+
+            try {
+                const response = await fetch("/api/rag/query/", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({ query, product_id: Number(productId), document_id: Number(documentId) })
+                });
+
+                const data = await response.json();
+                console.log("FULL RESPONSE:", data);
+                // 2. Display the Answer
+                answerText.innerText = data.answer;
+
+                // 3. Populate the Findings Table
+                findingsTable.innerHTML = "";
+                const chunks = data.chunks || [];
+                const findings = data.findings || [];
+
+                // 1. Total chunks
+                chunksCountEl.innerText = chunks.length;
+
+                // 2. Total findings
+                findingsCountEl.innerText = findings.length;
+
+                // 3. Number of issues detected (same as findings or filtered)
+                issuesCountEl.innerText = findings.length;
+
+                // 4. Severity count (example: HIGH only)
+                const highSeverityCount = findings.filter(
+                    f => (f.severity || "").toLowerCase() === "high"
+                ).length;
+
+                severityCountEl.innerText = highSeverityCount;
+                (data.findings || []).forEach(f => {
+                    const row = `
                 <tr>
                     <td><strong>${f.rule_name}</strong></td>
                     <td><span class="badge bg-secondary">${f.fca_rule_ref}</span></td>
                     <td><span class="badge ${getSeverityClass(f.severity)}">${f.severity}</span></td>
                     <td class="small text-muted"><em>"${f.snippet}"</em></td>
                 </tr>`;
-            findingsTable.insertAdjacentHTML('beforeend', row);
+                    findingsTable.insertAdjacentHTML('beforeend', row);
+                });
+
+            } catch (error) {
+                console.error("REAL ERROR:", error);
+                answerText.innerText = "Error: " + error.message;
+            } finally {
+                this.disabled = false;
+                this.innerText = "Ask";
+            }
         });
 
-    } catch (error) {
-        answerText.innerText = "Error: Could not reach the AI server.";
-    } finally {
-        this.disabled = false;
-        this.innerText = "Ask";
-    }
-});
+
+        // Show answer
+        document.getElementById("ragAnswerCard").style.display = "block";
+        document.getElementById("ragAnswer").innerText = data.answer;
 
 
-   // Show answer
-    document.getElementById("ragAnswerCard").style.display = "block";
-    document.getElementById("ragAnswer").innerText = data.answer;
 
-    // --------------------------
-    // AREA CHART (Chunk relevance)
-    // --------------------------
-    const areaCtx = document.getElementById("myAreaChart");
-    new Chart(areaCtx, {
-        type: "line",
-        data: {
-            labels: data.chunks.map(c => "Chunk " + c.chunk_index),
-            datasets: [{
-                label: "Relevance Score",
-                data: data.chunks.map(c => c.score),
-                fill: true,
-                borderColor: "blue",
-                backgroundColor: "rgba(0, 123, 255, 0.2)"
-            }]
-        }
-    });
 
-    // --------------------------
-    // BAR CHART (spaCy severity)
-    // --------------------------
-    const severityCounts = {
-        high: data.findings.filter(f => f.severity === "high").length,
-        medium: data.findings.filter(f => f.severity === "medium").length,
-        low: data.findings.filter(f => f.severity === "low").length,
-    };
 
-    const barCtx = document.getElementById("myBarChart");
-    new Chart(barCtx, {
-        type: "bar",
-        data: {
-            labels: ["High", "Medium", "Low"],
-            datasets: [{
-                label: "Findings",
-                data: [severityCounts.high, severityCounts.medium, severityCounts.low],
-                backgroundColor: ["red", "orange", "green"]
-            }]
-        }
-    });
 
-    // --------------------------
-    // SPACY FINDINGS TABLE
-    // --------------------------
-    const findingsTable = document.getElementById("findingsTable");
-    findingsTable.innerHTML = "";
-    data.findings.forEach(f => {
-        findingsTable.innerHTML += `
+        // Count by rule
+        // const ruleCounts = {};
+        // Count by severity
+
+        findings.forEach(f => {
+            // Rule count
+            const rule = f.rule_name || "Unknown";
+            ruleCounts[rule] = (ruleCounts[rule] || 0) + 1;
+
+            // Severity count
+            const s = (f.severity || "").toLowerCase();
+            if (severityCounts[s] !== undefined) {
+                severityCounts[s]++;
+            }
+        });
+
+
+
+        // --------------------------
+        // BAR CHART (spaCy severity)
+        // --------------------------
+        // const severityCounts = {
+        //     high: data.findings.filter(f => f.severity === "high").length,
+        //     medium: data.findings.filter(f => f.severity === "medium").length,
+        //     low: data.findings.filter(f => f.severity === "low").length,
+        // };
+
+        const barCtx = document.getElementById("myBarChart");
+        new Chart(barCtx, {
+            type: "bar",
+            data: {
+                labels: ["High", "Medium", "Low"],
+                datasets: [{
+                    label: "Findings",
+                    data: [severityCounts.high, severityCounts.medium, severityCounts.low],
+                    backgroundColor: ["red", "orange", "green"]
+                }]
+            }
+        });
+
+        // --------------------------
+        // SPACY FINDINGS TABLE
+        // --------------------------
+        const findingsTable = document.getElementById("findingsTable");
+        findingsTable.innerHTML = "";
+        (data.findings || []).forEach(f => {
+            findingsTable.innerHTML += `
             <tr>
                 <td>${f.rule_name}</td>
                 <td>${f.fca_rule_ref}</td>
@@ -358,7 +477,15 @@
                 <td>${f.snippet}</td>
             </tr>
         `;
-    });
+        });
+
+
+
+
+
+
+
+    </script>
 
 
 
@@ -367,31 +494,6 @@
 
 
 
+</body>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</script>
-
-
-
-
-
-
-    </body>
 </html>

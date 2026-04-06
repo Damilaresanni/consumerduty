@@ -4,30 +4,49 @@ Chart.defaults.global.defaultFontColor = '#292b2c';
 
 // Bar Chart Example
 // BAR CHART 1
+
+
+const findings = data.findings || [];
+
+// Count by rule
+const ruleCounts = {};
+// Count by severity
+const severityCounts = {
+    high: 0,
+    medium: 0,
+    low: 0
+};
+
+findings.forEach(f => {
+    // Rule count
+    const rule = f.rule_name || "Unknown";
+    ruleCounts[rule] = (ruleCounts[rule] || 0) + 1;
+
+    // Severity count
+    const s = (f.severity || "").toLowerCase();
+    if (severityCounts[s] !== undefined) {
+        severityCounts[s]++;
+    }
+});
+
 const ctx1 = document.getElementById('myBarChart').getContext('2d');
 
 new Chart(ctx1, {
     type: 'bar',
     data: {
-        labels: ['Fees', 'Clarity', 'Misleading Claims'],
+        labels: Object.keys(ruleCounts),
         datasets: [{
             label: 'Findings',
-            data: [12, 19, 7],
-            backgroundColor:'rgba(54, 162, 235, 0.6)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
+            data: Object.values(ruleCounts)
         }]
     },
     options: {
         responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
+        plugins: {
+            legend: { display: false }
         }
     }
 });
-
 
 // BAR CHART 2
 const ctx2 = document.getElementById('myBarChart2').getContext('2d');
@@ -35,25 +54,17 @@ const ctx2 = document.getElementById('myBarChart2').getContext('2d');
 new Chart(ctx2, {
     type: 'bar',
     data: {
-        labels: ['Low', 'Medium', 'High'],
+        labels: ['High', 'Medium', 'Low'],
         datasets: [{
             label: 'Severity',
-            data: [5, 10, 8, 3],
-            backgroundColor: [
-                'rgba(54, 162, 235, 0.6)',
-                'rgba(255, 206, 86, 0.6)',
-                'rgba(255, 99, 132, 0.6)'
-            ],
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
+            data: [
+                severityCounts.high,
+                severityCounts.medium,
+                severityCounts.low
+            ]
         }]
     },
     options: {
-        responsive: true,
-        scales: {
-            y: {
-                beginAtZero: true
-            }
-        }
+        responsive: true
     }
 });

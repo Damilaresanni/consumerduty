@@ -11254,3 +11254,21 @@ body {
     background-color: #002A5C !important;
 
 }
+
+
+
+@media (min-width: 1200px) {
+    .h-100 {
+        height: 100% !important;
+    }
+}
+
+.form-select-sm {
+    font-size: 0.8rem;
+    height: 31px;
+}
+
+
+.card-body {
+    padding: 1rem;
+}

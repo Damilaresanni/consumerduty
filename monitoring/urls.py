@@ -26,7 +26,8 @@ urlpatterns = [
     path("api/tasks/status/<str:task_id>/" , api.check_task_status),
     path("api/rag/query/" , api.rag_with_findings),
     path("api/documents/<int:pk>/delete/", api.delete_document),
-    path("api/documents/<int:pk>/edit/", api.update_product)
+    path("api/documents/<int:pk>/edit/", api.update_product),
+    path("api/test/nlp", api.test_nlp)
 
 ] 
 

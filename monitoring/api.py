@@ -6,9 +6,10 @@ from.rag import search_similar_chunks, build_prompt, call_llm
 from .serializers import DocumentSerializer
 from .forms import UploadDocumentForm
 from rest_framework import status
-from .models import Product
+from .models import Product, Document
 from celery.result import AsyncResult
 from .tasks import process_document
+from .nlp import run_spacy_rules
 
 
 @api_view(["DELETE"])
@@ -139,31 +140,30 @@ def upload_document(request):
 
 @api_view(["POST"])
 def rag_query(request,product_id):
-    product_id = request.data.get("product_id")
-    query = request.data.get("query")
-    if not query:
-        return Response({"error": "Query is required"}, status=400)
-    
-    results = search_similar_chunks(query, product_id=product_id, top_k=5)
-    return Response({"results": results})
-
+  pass
 
 @api_view(["POST"])
 def rag_with_findings(request):
-    product_id = request.data.get("product_id")
+    product_id = int(request.data.get("product_id"))
     query = request.data.get("query")
+    document_id = int(request.data.get("document_id"))
+    
+
+    if not Document.objects.filter(id=document_id, product_id=product_id).exists():
+        return Response({"error": "Security Mismatch: Document does not belong to Product"}, status=400)
+    
     if not query:
         return Response({"error": "Query is required"}, status=400)
     
     if not product_id:
         return Response({"error": "product_id is required"}, status=400)
     
-    chunks = search_similar_chunks(query, product_id=product_id, top_k=10)
-    
-    doc_ids = {c["document_id"] for c in chunks} 
-    
+    chunks = search_similar_chunks(query, document_id =document_id, top_k=10)
+    product_type = print(type(document_id))
     if not chunks:
-        return Response({"answer": "No relevant data found", "chunks": [], "findings": []})
+        return Response({"answer": "No relevant data found", "product_id": product_id, "document_id": document_id, "chunks":chunks, "product_type": product_type})
+
+    doc_ids = {c["document_id"] for c in chunks} 
     
     findings = RuleBasedFinding.objects.filter(document_id__in =doc_ids)
     
@@ -184,6 +184,7 @@ def rag_with_findings(request):
             }
             for f in findings
         ],
+        
     })
     
     
@@ -203,7 +204,11 @@ def check_task_status(request, task_id):
     
     
     
-    
-    
-    
+@api_view(["GET"])
+def test_nlp(request):
+    text = "This investment is not risk-free but offers guaranteed returns."
+    results = run_spacy_rules(text)
 
+    for r in results:
+        print(r)
+    return Response({"results":results})

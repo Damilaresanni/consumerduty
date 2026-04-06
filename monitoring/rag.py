@@ -1,9 +1,12 @@
 from qdrant_client.models import Filter, FieldCondition, MatchValue
-from .vector_store import embed_text, qdrant, COLLECTION_NAME
+from .vector_store import embed_text, get_qdrant, COLLECTION_NAME
 from fastembed import TextEmbedding
 from qdrant_client import QdrantClient
 from openai import OpenAI
 from dotenv import load_dotenv
+from . eval import (load_dataset,evaluate_system,classification_report,plot_confusion_matrix,
+                    error_analysis,evaluate_faithfulness, save_to_pdf
+        )
 import os
 
 
@@ -17,7 +20,7 @@ COLLECTION_NAME = "document_chunks"
 
 
 
-def search_similar_chunks(query:str,product_id: int ,top_k: int= 10,):
+def search_similar_chunks(query:str,document_id: int ,top_k: int= 10,):
     vector = list(embedder.embed([query]))[0]
                   
     results = qdrant.query_points(
@@ -26,7 +29,7 @@ def search_similar_chunks(query:str,product_id: int ,top_k: int= 10,):
         limit=top_k,
         with_payload= True,
         query_filter=Filter(
-            must=[FieldCondition(key="product_id", match= MatchValue(value=product_id))]
+            must=[FieldCondition(key="document_id", match= MatchValue(value=document_id))]
         )
         
         
@@ -114,3 +117,42 @@ def call_llm(prompt: str) -> str:
     return message.content or ""
 
 
+def nlp_eval(request):
+
+    data = load_dataset("fca_dataset_50_samples.csv")
+
+    y_true, y_pred, results = evaluate_system(data)
+
+    # Metrics
+    report = classification_report(y_true, y_pred)
+    print(report)
+
+    # Confusion matrix
+    plot_confusion_matrix(y_true, y_pred)
+
+    # Error analysis
+    fp, fn = error_analysis(results)
+
+    print("\nFalse Positives:", len(fp))
+    print("False Negatives:", len(fn))
+
+    # Example LLM evaluation
+    example_output = "This contains guarantee-like wording which may be misleading."
+    faithfulness_score = evaluate_faithfulness(example_output, results[0]["findings"])
+
+    print("\nFaithfulness Score:", faithfulness_score)
+
+    # Save report
+    full_report = f"""
+FCA Compliance Evaluation Report
+
+Classification Report:
+{report}
+
+False Positives: {len(fp)}
+False Negatives: {len(fn)}
+
+Faithfulness Score (example): {faithfulness_score}
+"""
+
+    save_to_pdf(full_report)

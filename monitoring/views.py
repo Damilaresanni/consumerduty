@@ -23,7 +23,7 @@ from product.models import Product, ProductType
 
 @login_required
 def homepage(request):
-    products = Product.objects.all()
+    products = Product.objects.prefetch_related('documents').all()
     return render(request, 'dashboard.html', {'products':products})
 
 
