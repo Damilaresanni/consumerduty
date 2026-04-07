@@ -10,6 +10,8 @@ from .models import Product, Document
 from celery.result import AsyncResult
 from .tasks import process_document
 from .nlp import run_spacy_rules
+from .eval.eval import evalFca
+
 
 
 @api_view(["DELETE"])
@@ -170,6 +172,8 @@ def rag_with_findings(request):
     prompt =  build_prompt(query, chunks, findings)
     
     answer = call_llm(prompt)
+    
+    evalFca(query,answer,chunks,findings)
     
     return Response({
         "answer":answer,

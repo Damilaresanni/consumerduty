@@ -4,10 +4,9 @@ from fastembed import TextEmbedding
 from qdrant_client import QdrantClient
 from openai import OpenAI
 from dotenv import load_dotenv
-from . eval import (load_dataset,evaluate_system,classification_report,plot_confusion_matrix,
-                    error_analysis,evaluate_faithfulness, save_to_pdf
-        )
 import os
+
+
 
 
 
@@ -114,45 +113,7 @@ def call_llm(prompt: str) -> str:
         return ""
 
     message = response.choices[0].message
+    
     return message.content or ""
 
 
-def nlp_eval(request):
-
-    data = load_dataset("fca_dataset_50_samples.csv")
-
-    y_true, y_pred, results = evaluate_system(data)
-
-    # Metrics
-    report = classification_report(y_true, y_pred)
-    print(report)
-
-    # Confusion matrix
-    plot_confusion_matrix(y_true, y_pred)
-
-    # Error analysis
-    fp, fn = error_analysis(results)
-
-    print("\nFalse Positives:", len(fp))
-    print("False Negatives:", len(fn))
-
-    # Example LLM evaluation
-    example_output = "This contains guarantee-like wording which may be misleading."
-    faithfulness_score = evaluate_faithfulness(example_output, results[0]["findings"])
-
-    print("\nFaithfulness Score:", faithfulness_score)
-
-    # Save report
-    full_report = f"""
-FCA Compliance Evaluation Report
-
-Classification Report:
-{report}
-
-False Positives: {len(fp)}
-False Negatives: {len(fn)}
-
-Faithfulness Score (example): {faithfulness_score}
-"""
-
-    save_to_pdf(full_report)
