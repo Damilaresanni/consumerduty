@@ -216,3 +216,18 @@ def test_nlp(request):
     for r in results:
         print(r)
     return Response({"results":results})
+
+
+@api_view(['GET'])
+def checkRule(request):
+    findings = RuleBasedFinding.objects.filter(document_id=57)
+
+    context = [
+        f"{finding.rule_name} from : with description {finding.description} based on FCA rule {finding.fca_rule_ref}"
+        for finding in findings
+    ]
+
+    # Sanity check before passing to DeepEval
+    print(f"Context entries: {len(context)}")
+    print(f"type: {type(context)}")
+    return Response(context[0])

@@ -15,16 +15,19 @@ from deepeval.metrics import (
 )
 
 def evalFca(query,answer,chunks,findings):
-    
-    
+     
     test_case = LLMTestCase(
         input = query,
         actual_output=answer,
         expected_output="NON_COMPLIANT. The phrase 'guaranteed 10% annual returns' violates FCA CONC 3.3.1R.",
-        retrieval_context=chunks,
-        context=str(
-        findings.values_list("rule_name", "description", "snippet", "severity"))
-        )
+        retrieval_context=[chunk["text"] for chunk in chunks],
+        context = [
+        f"{finding.rule_name} from: with description {finding.description} "
+        f"based on FCA rule {finding.fca_rule_ref}"
+        for finding in findings
+    ]
+    
+    )
 
     compliance_metric = GEval(
         name="Compliance Accuracy",
@@ -68,7 +71,7 @@ def evalFca(query,answer,chunks,findings):
         output["results"].append({
             "metric": metric.name,
             "score": round(metric.score, 4),
-            "passed": metric.passed,
+            "passed": metric.success,
             "reason": metric.reason,
             "threshold": metric.threshold
         })
@@ -89,6 +92,8 @@ def evalFca(query,answer,chunks,findings):
             "timestamp", "input", "actual_output",
             "metric", "score", "passed", "threshold", "reason"
         ])
+       
+        
         for metric in results.test_results[0].metrics_data:
             writer.writerow([
                 datetime.now().isoformat(),
@@ -96,7 +101,7 @@ def evalFca(query,answer,chunks,findings):
                 test_case.actual_output,
                 metric.name,
                 round(metric.score, 4),
-                metric.passed,
+                metric.success,
                 metric.threshold,
                 metric.reason
             ])
@@ -123,18 +128,28 @@ def save_eval_result(test_case, results):
         "input": test_case.input,
         "actual_output": test_case.actual_output,
         "expected_output": test_case.expected_output,
-        "retrieval_context": test_case.retrieval_context,  # PDF chunks
-        "context": test_case.context,                       # FCA rule findings
+        "retrieval_context": test_case.retrieval_context,
+        "context": test_case.context,
         "metrics": []
     }
 
     for metric in results.test_results[0].metrics_data:
+        
+        score     = round(metric.score, 4)
+        threshold = metric.threshold
+        passed    = score >= threshold
+        
+        if metric.name == "Hallucination":
+            passed = score <= threshold
+        else:
+            passed = score >= threshold
+
         record["metrics"].append({
-            "name": metric.name,
-            "score": round(metric.score, 4),
-            "passed": metric.passed,
-            "threshold": metric.threshold,
-            "reason": metric.reason
+            "name":      metric.name,
+            "score":     score,
+            "threshold": threshold,
+            "passed":    passed,           
+            "reason":    metric.reason
         })
 
     all_results.append(record)
@@ -145,7 +160,7 @@ def save_eval_result(test_case, results):
     print(f"Saved {len(record['metrics'])} metrics to {RESULTS_FILE}")
 
 
-
+    return results
 
 
         
