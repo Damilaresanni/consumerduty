@@ -18,6 +18,12 @@ class ProductType(models.TextChoices):
     LOAN = "loan" , "Loan"
     INSURANCE = "insurance", "Insurance"
     SAVINGS =  "savings", "Savings"
+    INVESTMENT = "investment", "Investment"
+    CRYPTOCURRENCY = "cryptocurrency", "Cryptocurrency"
+    MORTGAGE = "mortgage", "Mortgage"
+    CASH_ISA = "cash_isa", "Cash_isa"
+    CONSUMER_CREDIT = "Consumer_credit", "consumer_credit"
+
     
 
 class CustomerType(models.TextChoices):

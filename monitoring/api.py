@@ -11,7 +11,7 @@ from celery.result import AsyncResult
 from .tasks import process_document
 from .nlp import run_spacy_rules
 from .eval.eval import evalFca
-
+from .utils import is_crypto_query
 
 
 @api_view(["DELETE"])
@@ -91,7 +91,8 @@ def upload_document(request):
     # which accepts two parameters the POST request abd the file on 
     # the file in the POST request.
     form = UploadDocumentForm(request.POST, request.FILES)
-
+    
+    
     #confirms the validity of the form if true else return 
     # an error response.
     if not form.is_valid():
@@ -161,9 +162,20 @@ def rag_with_findings(request):
         return Response({"error": "product_id is required"}, status=400)
     
     chunks = search_similar_chunks(query, document_id =document_id, top_k=10)
-    product_type = print(type(document_id))
-    if not chunks:
-        return Response({"answer": "No relevant data found", "product_id": product_id, "document_id": document_id, "chunks":chunks, "product_type": product_type})
+    
+    
+    if is_crypto_query(query):
+        PS23_6_DOCUMENT_ID = 64
+        regulatory_chunks = search_similar_chunks(
+            query=query,
+            document_id=PS23_6_DOCUMENT_ID,
+            top_k=3
+        )
+        chunks = chunks + regulatory_chunks
+    
+    
+    if not chunks :
+        return Response({"answer": "No relevant data found", "product_id": product_id, "document_id": document_id, "chunks":chunks})
 
     doc_ids = {c["document_id"] for c in chunks} 
     

@@ -122,3 +122,14 @@ def process_pdf(file_path):
             })
 
     return output
+
+
+
+def is_crypto_query(query: str) -> bool:
+    """Detect if query relates to cryptoassets."""
+    crypto_keywords = [
+        "crypto", "bitcoin", "ethereum", "token",
+        "blockchain", "nft", "defi", "exchange",
+        "wallet", "coin", "digital asset"
+    ]
+    return any(kw in query.lower() for kw in crypto_keywords)

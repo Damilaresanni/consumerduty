@@ -164,21 +164,19 @@
                                                 </select>
                                             </div>
                                         </div>
-
-                                        <form id="ragForm" class="mt-auto">
-                                            {% csrf_token %}
-                                            <div class="input-group input-group-sm mb-3">
-                                                <span class="input-group-text">Question</span>
-                                                <input type="text" id="query" class="form-control"
-                                                    placeholder="Ask about compliance...">
-                                            </div>
-
-                                            <button type="button" id="askBtn" class="btn btn-primary btn-sm w-100">
-                                                <span id="askSpinner"
-                                                    class="spinner-border spinner-border-sm d-none"></span>
-                                                <span id="askBtnText">Analyze Document</span>
-                                            </button>
-                                        </form>
+<form id="ragForm" class="mt-auto">
+{% csrf_token %}
+<div class="input-group input-group-sm mb-3">
+<span class="input-group-text">Question</span>
+<input type="text" id="query" class="form-control"
+placeholder="Ask about compliance...">
+</div>
+<button type="button" id="askBtn" class="btn btn-primary btn-sm w-100">
+<span id="askSpinner"
+class="spinner-border spinner-border-sm d-none"></span>
+<span id="askBtnText">Analyze Document</span>
+</button>
+</form>
                                     </div>
                                 </div>
                             </div>
