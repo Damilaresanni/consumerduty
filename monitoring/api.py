@@ -8,9 +8,9 @@ from .forms import UploadDocumentForm
 from rest_framework import status
 from .models import Product, Document
 from celery.result import AsyncResult
-from .tasks import process_document
+from .tasks import process_document, evalFca
 from .nlp import run_spacy_rules
-from .eval.eval import evalFca
+#from .eval.eval import evalFca
 from .utils import is_crypto_query
 
 
@@ -147,64 +147,88 @@ def rag_query(request,product_id):
 
 @api_view(["POST"])
 def rag_with_findings(request):
-    product_id = int(request.data.get("product_id"))
-    query = request.data.get("query")
-    document_id = int(request.data.get("document_id"))
-    
-
-    if not Document.objects.filter(id=document_id, product_id=product_id).exists():
-        return Response({"error": "Security Mismatch: Document does not belong to Product"}, status=400)
-    
-    if not query:
-        return Response({"error": "Query is required"}, status=400)
-    
-    if not product_id:
-        return Response({"error": "product_id is required"}, status=400)
-    
-    chunks = search_similar_chunks(query, document_id =document_id, top_k=10)
-    
-    
-    if is_crypto_query(query):
+    try:
+        product_id = int(request.data.get("product_id"))
+        query = request.data.get("query")
+        document_id = int(request.data.get("document_id"))
         PS23_6_DOCUMENT_ID = 64
-        regulatory_chunks = search_similar_chunks(
-            query=query,
-            document_id=PS23_6_DOCUMENT_ID,
-            top_k=3
-        )
-        chunks = chunks + regulatory_chunks
-    
-    
-    if not chunks :
-        return Response({"answer": "No relevant data found", "product_id": product_id, "document_id": document_id, "chunks":chunks})
 
-    doc_ids = {c["document_id"] for c in chunks} 
-    
-    findings = RuleBasedFinding.objects.filter(document_id__in =doc_ids)
-    
-    prompt =  build_prompt(query, chunks, findings)
-    
-    answer = call_llm(prompt)
-    
-    evalFca(query,answer,chunks,findings)
-    
-    return Response({
-        "answer":answer,
-        "chunks":chunks,
-        "findings": [
+        if not Document.objects.filter(id=document_id, product_id=product_id).exists():
+            return Response({"error": "Security Mismatch: Document does not belong to Product"}, status=400)
+        
+        if not query:
+            return Response({"error": "Query is required"}, status=400)
+        
+        if not product_id:
+            return Response({"error": "product_id is required"}, status=400)
+        
+        chunks = search_similar_chunks(query, document_id =document_id, top_k=10)
+        product_chunks = (search_similar_chunks(query, document_id =document_id, top_k=3))
+        reg_chunks = search_similar_chunks(
+                query=query,
+                document_id=PS23_6_DOCUMENT_ID,
+                top_k=3
+            )
+        eval_chunks= product_chunks + reg_chunks
+        
+        if is_crypto_query(query):
+            PS23_6_DOCUMENT_ID = 64
+            regulatory_chunks = search_similar_chunks(
+                query=query,
+                document_id=PS23_6_DOCUMENT_ID,
+                top_k=3
+            )
+            chunks = chunks + regulatory_chunks
+        
+        
+        if not chunks :
+            return Response({"answer": "No relevant data found", "product_id": product_id, "document_id": document_id, "chunks":chunks})
+
+        doc_ids = {c["document_id"] for c in chunks} 
+        
+        findings = RuleBasedFinding.objects.filter(document_id__in =doc_ids)
+        
+        prompt =  build_prompt(query, chunks, findings)
+        
+        answer = call_llm(prompt)
+        clean_chunks = [str(chunk) for chunk in eval_chunks]
+        print(type(clean_chunks))
+        clean_findings = [
             {
-                "document_id":f.document.id,
                 "rule_name": f.rule_name,
-                "fca_rule_ref":f.fca_rule_ref,
-                "severity": f.severity,
-                "snippet": f.snippet,
+                "snippet": f.fca_rule_ref,
+                "severity": f.snippet
             }
             for f in findings
-        ],
+        ]
+        task = evalFca.delay(query, answer, clean_chunks, clean_findings) # type: ignore
         
-    })
+        return Response({
+            "answer":answer,
+            "chunks":chunks,
+            "task_id":task.id,
+            "findings": [
+                {
+                    "document_id":f.document.id,
+                    "rule_name": f.rule_name,
+                    "fca_rule_ref":f.fca_rule_ref,
+                    "severity": f.severity,
+                    "snippet": f.snippet,
+                }
+                for f in findings
+            ],
+            
+        })
     
     
-
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return Response(
+        {"error": "Something went wrong internaly"}, 
+        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+    )
+    else:
+      print("The Query has been submitted Succesfully")
 
 
 @api_view(['GET'])
@@ -243,3 +267,13 @@ def checkRule(request):
     print(f"Context entries: {len(context)}")
     print(f"type: {type(context)}")
     return Response(context[0])
+
+
+@api_view(["GET"])
+def get_eval_status(task_id):
+    result = AsyncResult(task_id)
+
+    return {
+        "status": result.status,   # PENDING, STARTED, SUCCESS, FAILURE
+        "result": result.result    # score or error
+    }

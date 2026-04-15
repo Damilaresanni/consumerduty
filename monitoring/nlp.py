@@ -500,6 +500,155 @@ FCA_RULES = [
             "Firm Reference Number (FRN)."
         ),
     },
+    # In fca_rules.py — add PS23/6 as a dual reference
+
+{
+    "name": "Missing mandatory crypto risk warning",
+    "fca_ref": "COBS 4.12A.4R / PS23/6 para 3.14",  # ← dual reference
+    "severity": 5,
+    "category": "Risk Disclosure",
+    "description": (
+        "Cryptoasset promotions must display the FCA prescribed "
+        "risk warning introduced by PS23/6 in October 2023."
+    ),
+    "ps23_6_requirement": (
+        "PS23/6 para 3.14 requires the following warning in "
+        "the specified form: 'Don't invest unless you're prepared "
+        "to lose all the money you invest. This is a high-risk "
+        "investment and you are unlikely to be protected if "
+        "something goes wrong. Take 2 mins to learn more.'"
+    ),
+    "requires_absence_of": [
+        r"don't invest unless you.re prepared to lose",
+        r"this is a high.risk investment",
+        r"unlikely to be protected if something goes wrong"
+    ],
+    "keywords": ["crypto", "bitcoin", "ethereum", "invest", "token"],
+    "regex_patterns": [
+        r"\bcrypto(asset|currency)?\b",
+        r"\bbitcoin\b",
+        r"\bethereum\b",
+        r"\btoken\b",
+    ],
+    "explanation_template": (
+        "Cryptoasset promotion detected without the mandatory FCA "
+        "risk warning required under COBS 4.12A.4R as introduced "
+        "by PS23/6."
+    ),
+    "suggestion": (
+        "Add verbatim: 'Don't invest unless you're prepared to lose "
+        "all the money you invest. This is a high-risk investment "
+        "and you are unlikely to be protected if something goes "
+        "wrong. Take 2 mins to learn more.'"
+    ),
+},
+{
+    "name": "Incentive to invest in cryptoassets",
+    "fca_ref": "COBS 4.12A.16R / PS23/6 para 3.41",
+    "severity": 5,
+    "category": "Fairness",
+    "description": (
+        "PS23/6 explicitly prohibits monetary and non-monetary "
+        "incentives to invest in cryptoassets from October 2023."
+    ),
+    "ps23_6_requirement": (
+        "PS23/6 para 3.41: Firms must not offer any incentive "
+        "to invest including referral bonuses, free crypto tokens, "
+        "cashback, or any other inducement."
+    ),
+    "keywords": [
+        "referral bonus", "free crypto", "sign-up bonus", "cashback"
+    ],
+    "regex_patterns": [
+        r"\breferral (bonus|reward)\b",
+        r"\bfree (bitcoin|crypto|token)\b",
+        r"\bsign.?up bonus\b",
+        r"\bcashback\b",
+    ],
+    "negation_patterns": [],
+    "explanation_template": (
+        "The phrase '{match}' constitutes an incentive to invest "
+        "prohibited under COBS 4.12A.16R as introduced by PS23/6."
+    ),
+    "suggestion": (
+        "Remove all incentives to invest. PS23/6 prohibits referral "
+        "bonuses, free tokens, cashback and any other inducement "
+        "to invest in cryptoassets."
+    ),
+},
+{
+    "name": "Missing cooling-off period disclosure",
+    "fca_ref": "COBS 4.12A.15R / PS23/6 para 3.38",
+    "severity": 4,
+    "category": "Risk Disclosure",
+    "description": (
+        "PS23/6 requires a 24-hour cooling-off period for all "
+        "direct offer financial promotions for cryptoassets."
+    ),
+    "ps23_6_requirement": (
+        "PS23/6 para 3.38: Firms must allow a minimum 24-hour "
+        "cooling-off period from the point a consumer requests "
+        "to see the direct offer promotion."
+    ),
+    "requires_absence_of": [
+        r"cooling.off",
+        r"24.hour",
+        r"time to reflect",
+    ],
+    "keywords": ["invest now", "buy now", "get started"],
+    "regex_patterns": [
+        r"\binvest now\b",
+        r"\bbuy now\b",
+        r"\bopen (an )?account\b",
+    ],
+    "explanation_template": (
+        "Direct offer crypto promotion detected without the mandatory "
+        "24-hour cooling-off period required by PS23/6 para 3.38."
+    ),
+    "suggestion": (
+        "Add: 'You have a 24-hour cooling-off period before your "
+        "investment is processed. This is required by FCA rules "
+        "introduced in October 2023.'"
+    ),
+},
+{
+    "name": "Missing appropriateness assessment disclosure",
+    "fca_ref": "COBS 10.1.2R / PS23/6 para 3.45",
+    "severity": 4,
+    "category": "Risk Disclosure",
+    "description": (
+        "PS23/6 requires firms to conduct and disclose an "
+        "appropriateness assessment before a retail consumer "
+        "can invest in cryptoassets."
+    ),
+    "ps23_6_requirement": (
+        "PS23/6 para 3.45: Firms must assess whether a retail "
+        "consumer has the knowledge and experience to understand "
+        "the risks of investing in cryptoassets before allowing "
+        "them to proceed."
+    ),
+    "requires_absence_of": [
+        r"appropriateness (assessment|check|test)",
+        r"knowledge and experience",
+        r"understand the risks",
+    ],
+    "keywords": ["invest", "buy", "purchase", "get started"],
+    "regex_patterns": [
+        r"\bstart investing\b",
+        r"\bbuy (bitcoin|crypto|ethereum)\b",
+        r"\bopen (an )?account\b",
+    ],
+    "explanation_template": (
+        "Crypto promotion directs consumers to invest without "
+        "disclosing the appropriateness assessment requirement "
+        "under PS23/6 para 3.45."
+    ),
+    "suggestion": (
+        "Add: 'Before investing, we are required to assess whether "
+        "cryptoasset investment is appropriate for you based on "
+        "your knowledge and experience.'"
+    ),
+},
 ]
    
    
@@ -606,6 +755,8 @@ def run_spacy_rules(text: str):
                     "fca_ref": rule["fca_ref"],
                     "severity": rule["severity"],
                     "description": rule["description"],
+                    "start": 0,
+                    "end": len(text),
                     "snippet": text[:200],
 
                     "metrics": scores,

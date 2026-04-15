@@ -4,6 +4,8 @@ from deepeval.test_case import LLMTestCaseParams
 from datetime import datetime
 import json
 import csv, os
+from celery.result import AsyncResult
+from celery import shared_task
 
 from deepeval.metrics import (
     AnswerRelevancyMetric,
@@ -14,59 +16,52 @@ from deepeval.metrics import (
     GEval
 )
 
-def evalFca(query,answer,chunks,findings):
-     
-    test_case = LLMTestCase(
-        input = query,
-        actual_output=answer,
-        expected_output="NON_COMPLIANT. The phrase 'guaranteed 10% annual returns' violates FCA CONC 3.3.1R.",
-        retrieval_context=[chunk["text"] for chunk in chunks],
-        context = [
-        f"{finding.rule_name} from: with description {finding.description} "
-        f"based on FCA rule {finding.fca_rule_ref}"
-        for finding in findings
-    ]
-    
-    )
+RESULTS_FILE = "evals/eval_results1.json"
 
-    compliance_metric = GEval(
-        name="Compliance Accuracy",
-        criteria="Check if the output correctly identifies FCA compliance violations and cites the relevant rule.",
-        evaluation_params=[
-            LLMTestCaseParams.INPUT,
-            LLMTestCaseParams.ACTUAL_OUTPUT,
-            LLMTestCaseParams.EXPECTED_OUTPUT
-        ],
-        threshold=0.7
-    )
-    
+def save_eval_result(test_case, results,output):
+    os.makedirs("evals", exist_ok=True)
 
-    answer_relevancy = AnswerRelevancyMetric(threshold=0.7)
-    faithfulness = FaithfulnessMetric(threshold=0.8)
-    hallucination = HallucinationMetric(threshold=0.3)
-    contextual_precision = ContextualPrecisionMetric(threshold=0.7)
-    contextual_recall = ContextualRecallMetric(threshold=0.7)
-    
-    results = evaluate(
-    test_cases=[test_case],
-    metrics=[answer_relevancy, faithfulness, 
-            compliance_metric,hallucination,
-            contextual_precision,
-            contextual_recall]
-    )
-    
-    save_eval_result(test_case, results)
-    
-    output = {
-    "timestamp": datetime.now().isoformat(),
-    "test_input": test_case.input,
-    "actual_output": test_case.actual_output,
-    "expected_output": test_case.expected_output,
-    "retrieval_context": test_case.retrieval_context,  # PDF chunks
-    "context": test_case.context,                      # FCA rule-based findings
-    "results": []
+    if os.path.exists(RESULTS_FILE):
+        with open(RESULTS_FILE, "r") as f:
+            all_results = json.load(f)
+    else:
+        all_results = []
+
+    record = {
+        "timestamp": datetime.now().isoformat(),
+        "input": test_case.input,
+        "actual_output": test_case.actual_output,
+        "expected_output": test_case.expected_output,
+        "retrieval_context": test_case.retrieval_context,
+        "context": test_case.context,
+        "metrics": []
     }
-    
+
+    for metric in results.test_results[0].metrics_data:
+        
+        score     = round(metric.score, 4)
+        threshold = metric.threshold
+        
+        if metric.name == "Hallucination":
+            passed = score <= threshold
+        else:
+            passed = score >= threshold
+
+        record["metrics"].append({
+            "name":      metric.name,
+            "score":     score,
+            "threshold": threshold,
+            "passed":    passed,           
+            "reason":    metric.reason
+        })
+
+    all_results.append(record)
+
+    with open(RESULTS_FILE, "w") as f:
+        json.dump(all_results, f, indent=2)
+
+    print(f"Saved {len(record['metrics'])} metrics to {RESULTS_FILE}")
+
     for metric in results.test_results[0].metrics_data:
         output["results"].append({
             "metric": metric.name,
@@ -108,59 +103,10 @@ def evalFca(query,answer,chunks,findings):
 
     print(f"Saved to {filename_json}")
     print(f"Saved to {filename_csv}")
-    
-    
-    
-
-RESULTS_FILE = "evals/eval_results.json"
-
-def save_eval_result(test_case, results):
-    os.makedirs("evals", exist_ok=True)
-
-    if os.path.exists(RESULTS_FILE):
-        with open(RESULTS_FILE, "r") as f:
-            all_results = json.load(f)
-    else:
-        all_results = []
-
-    record = {
-        "timestamp": datetime.now().isoformat(),
-        "input": test_case.input,
-        "actual_output": test_case.actual_output,
-        "expected_output": test_case.expected_output,
-        "retrieval_context": test_case.retrieval_context,
-        "context": test_case.context,
-        "metrics": []
-    }
-
-    for metric in results.test_results[0].metrics_data:
-        
-        score     = round(metric.score, 4)
-        threshold = metric.threshold
-        passed    = score >= threshold
-        
-        if metric.name == "Hallucination":
-            passed = score <= threshold
-        else:
-            passed = score >= threshold
-
-        record["metrics"].append({
-            "name":      metric.name,
-            "score":     score,
-            "threshold": threshold,
-            "passed":    passed,           
-            "reason":    metric.reason
-        })
-
-    all_results.append(record)
-
-    with open(RESULTS_FILE, "w") as f:
-        json.dump(all_results, f, indent=2)
-
-    print(f"Saved {len(record['metrics'])} metrics to {RESULTS_FILE}")
-
 
     return results
 
 
         
+
+
