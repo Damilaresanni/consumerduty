@@ -8,9 +8,9 @@ from .forms import UploadDocumentForm
 from rest_framework import status
 from .models import Product, Document
 from celery.result import AsyncResult
-from .tasks import process_document, evalFca
+from .tasks import process_document,evalFca
 from .nlp import run_spacy_rules
-#from .eval.eval import evalFca
+# from .eval.eval import evalFca
 from .utils import is_crypto_query
 
 
@@ -192,21 +192,24 @@ def rag_with_findings(request):
         
         answer = call_llm(prompt)
         clean_chunks = [str(chunk) for chunk in eval_chunks]
-        print(type(clean_chunks))
+        print(f"clean chunks: {type(clean_chunks)}")
+        
         clean_findings = [
             {
                 "rule_name": f.rule_name,
-                "snippet": f.fca_rule_ref,
-                "severity": f.snippet
+                "fca_rule_ref": f.fca_rule_ref,
+                "snippet": f.snippet,
+                "description":f.description,
             }
             for f in findings
         ]
+        print(f"clean findings: {type(clean_findings)}")
         task = evalFca.delay(query, answer, clean_chunks, clean_findings) # type: ignore
         
         return Response({
             "answer":answer,
             "chunks":chunks,
-            "task_id":task.id,
+            "task_id": task.id,
             "findings": [
                 {
                     "document_id":f.document.id,
@@ -227,8 +230,7 @@ def rag_with_findings(request):
         {"error": "Something went wrong internaly"}, 
         status=status.HTTP_500_INTERNAL_SERVER_ERROR
     )
-    else:
-      print("The Query has been submitted Succesfully")
+    
 
 
 @api_view(['GET'])

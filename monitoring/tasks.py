@@ -82,18 +82,15 @@ def process_document(document_id: int):
 
 @shared_task
 def evalFca(query,answer,chunks,findings):
-    try:
-        retrieval_context=[chunk["text"] for chunk in chunks]
-        print(retrieval_context)
         test_case = LLMTestCase(
             input = query,
             actual_output=answer,
             expected_output="NON_COMPLIANT. The phrase 'guaranteed 10% annual returns' violates FCA CONC 3.3.1R.",
-            retrieval_context=[chunk["text"] for chunk in chunks],
+            retrieval_context=[chunk for chunk in chunks],
             
-            context = [
-            f"{finding.rule_name} from: with description {finding.description} "
-            f"based on FCA rule {finding.fca_rule_ref}"
+           context = [
+            f"{finding['rule_name']} with description {finding['description']} "
+            f"based on FCA rule {finding['fca_rule_ref']}"
             for finding in findings
         ]
         
@@ -147,8 +144,4 @@ def evalFca(query,answer,chunks,findings):
                 "output":output,
                 "status": "completed"
             }
-    except Exception as e:
-        return {
-            "error": str(e),
-            "status": "failed"
-        }
+  
