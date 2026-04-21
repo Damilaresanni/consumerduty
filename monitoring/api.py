@@ -148,7 +148,7 @@ def rag_query(request,product_id):
 @api_view(["POST"])
 def rag_with_findings(request):
    #try exception block for executing the user query operation
-    try:
+    
         #stores the product_id from the request headers in product_id
         product_id = int(request.data.get("product_id"))
         #receives user query from the user through the request
@@ -187,8 +187,20 @@ def rag_with_findings(request):
         #this line retrives the llm analysis answer by calling the llm via call_llm fuction.
         answer = call_llm(prompt)
 
+        chunks = [str(chunk) for chunk in chunks]
+    
+        findings = [
+            {
+                "rule_name": f.rule_name,
+                "fca_rule_ref": f.fca_rule_ref,
+                "snippet": f.snippet,
+                "description":f.description,
+            }
+            for f in findings
+        ]
+        
         #this is an evaluation task that runs in the background by calling evalFca  function
-        task = evalFca.delay(query, answer, clean_chunks, clean_findings) # type: ignore
+        task = evalFca.delay(query, answer, chunks, findings) # type: ignore
         
         return Response({
             "answer":answer,
@@ -196,11 +208,10 @@ def rag_with_findings(request):
             "task_id": task.id,
             "findings": [
                 {
-                    "document_id":f.document.id,
-                    "rule_name": f.rule_name,
-                    "fca_rule_ref":f.fca_rule_ref,
-                    "severity": f.severity,
-                    "snippet": f.snippet,
+                "rule_name": f["rule_name"],
+                "fca_rule_ref": f["fca_rule_ref"],
+                "snippet": f["snippet"],
+                "description":f["description"],
                 }
                 for f in findings
             ],
@@ -208,12 +219,7 @@ def rag_with_findings(request):
         })
     
     
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        return Response(
-        {"error": "Something went wrong internaly"}, 
-        status=status.HTTP_500_INTERNAL_SERVER_ERROR
-    )
+
     
 
 

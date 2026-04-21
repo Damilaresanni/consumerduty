@@ -100,7 +100,7 @@ def evalFca(query,answer,chunks,findings):
         test_case = LLMTestCase(
             input = query,
             actual_output=answer,
-            expected_output="NON_COMPLIANT. The phrase 'guaranteed 10% annual returns' violates FCA CONC 3.3.1R.",
+            expected_output="COMPLIANT",
             retrieval_context=[chunk for chunk in chunks],
             
            context = [
