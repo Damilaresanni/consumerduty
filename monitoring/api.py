@@ -80,7 +80,7 @@ def create_product(request):
 
 
 
-
+#djangorestframework decorator to enable API capability on the function
 @api_view(["POST"])
 def upload_document(request):
     #Note: The UplaodDocumentForm fucntion is to validate the incoming 
@@ -147,63 +147,47 @@ def rag_query(request,product_id):
 
 @api_view(["POST"])
 def rag_with_findings(request):
+   #try exception block for executing the user query operation
     try:
+        #stores the product_id from the request headers in product_id
         product_id = int(request.data.get("product_id"))
+        #receives user query from the user through the request
         query = request.data.get("query")
+        #gets the document_id from the requet headers
         document_id = int(request.data.get("document_id"))
-        PS23_6_DOCUMENT_ID = 64
 
+        #ensures a document related to the product exists
         if not Document.objects.filter(id=document_id, product_id=product_id).exists():
             return Response({"error": "Security Mismatch: Document does not belong to Product"}, status=400)
         
+        #this line validates the user imput by enforcing required the query field
         if not query:
             return Response({"error": "Query is required"}, status=400)
         
+        #this line validates the user imput by enforcing required the product_id
         if not product_id:
             return Response({"error": "product_id is required"}, status=400)
         
+        #retrives relevant chunks based on the query and the document_id
         chunks = search_similar_chunks(query, document_id =document_id, top_k=10)
-        product_chunks = (search_similar_chunks(query, document_id =document_id, top_k=3))
-        reg_chunks = search_similar_chunks(
-                query=query,
-                document_id=PS23_6_DOCUMENT_ID,
-                top_k=3
-            )
-        eval_chunks= product_chunks + reg_chunks
-        
-        if is_crypto_query(query):
-            PS23_6_DOCUMENT_ID = 64
-            regulatory_chunks = search_similar_chunks(
-                query=query,
-                document_id=PS23_6_DOCUMENT_ID,
-                top_k=3
-            )
-            chunks = chunks + regulatory_chunks
-        
-        
+       
+       #a validation check to ensure that chunks exists
         if not chunks :
             return Response({"answer": "No relevant data found", "product_id": product_id, "document_id": document_id, "chunks":chunks})
 
+        #retreive all the document ids contained in the retreived chunks
         doc_ids = {c["document_id"] for c in chunks} 
         
+        #query's the ruleBasedFinding table based on the document_id
         findings = RuleBasedFinding.objects.filter(document_id__in =doc_ids)
         
+        #calls the prompt function based on three arguments and stores the output in the prompt variable
         prompt =  build_prompt(query, chunks, findings)
         
+        #this line retrives the llm analysis answer by calling the llm via call_llm fuction.
         answer = call_llm(prompt)
-        clean_chunks = [str(chunk) for chunk in eval_chunks]
-        print(f"clean chunks: {type(clean_chunks)}")
-        
-        clean_findings = [
-            {
-                "rule_name": f.rule_name,
-                "fca_rule_ref": f.fca_rule_ref,
-                "snippet": f.snippet,
-                "description":f.description,
-            }
-            for f in findings
-        ]
-        print(f"clean findings: {type(clean_findings)}")
+
+        #this is an evaluation task that runs in the background by calling evalFca  function
         task = evalFca.delay(query, answer, clean_chunks, clean_findings) # type: ignore
         
         return Response({

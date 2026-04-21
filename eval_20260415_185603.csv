@@ -1,0 +1,31 @@
+timestamp,input,actual_output,metric,score,passed,threshold,reason
+2026-04-15T18:56:03.578213,does this product comply with FCA guidelines,"Label: NON_COMPLIANT  
+Violations: [Low readability]  
+FCA Rules Breached: [COBS 4.2.1R]  
+Reason: The KID is intended to provide clear and understandable information about the investment product. However, the compliance findings indicate low readability, which breaches COBS 4.2.1R that mandates financial promotions to be clear, fair, and not misleading with appropriate language for the target audience.  
+Suggestion: Improve the clarity and readability of the KID by simplifying the language, using plain English, and organizing information to enhance understanding for potential investors.",Answer Relevancy,1.0,True,0.7,"The score is 1.00 because the answer was fully relevant and addressed the question directly, with no irrelevant statements. Great job staying focused and concise!"
+2026-04-15T18:56:03.578285,does this product comply with FCA guidelines,"Label: NON_COMPLIANT  
+Violations: [Low readability]  
+FCA Rules Breached: [COBS 4.2.1R]  
+Reason: The KID is intended to provide clear and understandable information about the investment product. However, the compliance findings indicate low readability, which breaches COBS 4.2.1R that mandates financial promotions to be clear, fair, and not misleading with appropriate language for the target audience.  
+Suggestion: Improve the clarity and readability of the KID by simplifying the language, using plain English, and organizing information to enhance understanding for potential investors.",Faithfulness,1.0,True,0.8,The score is 1.00 because there are no contradictions—great job staying true to the retrieval context!
+2026-04-15T18:56:03.578346,does this product comply with FCA guidelines,"Label: NON_COMPLIANT  
+Violations: [Low readability]  
+FCA Rules Breached: [COBS 4.2.1R]  
+Reason: The KID is intended to provide clear and understandable information about the investment product. However, the compliance findings indicate low readability, which breaches COBS 4.2.1R that mandates financial promotions to be clear, fair, and not misleading with appropriate language for the target audience.  
+Suggestion: Improve the clarity and readability of the KID by simplifying the language, using plain English, and organizing information to enhance understanding for potential investors.",Compliance Accuracy [GEval],0.1896,False,0.7,"The Actual Output correctly identifies a non-compliance label and cites an FCA rule (COBS 4.2.1R), but it fails to identify the specific violation ('guaranteed 10% annual returns') and does not cite the correct rule (CONC 3.3.1R) as in the Expected Output. The Actual Output instead focuses on low readability, which is not mentioned in the Expected Output, indicating a significant misalignment with the evaluation steps."
+2026-04-15T18:56:03.578419,does this product comply with FCA guidelines,"Label: NON_COMPLIANT  
+Violations: [Low readability]  
+FCA Rules Breached: [COBS 4.2.1R]  
+Reason: The KID is intended to provide clear and understandable information about the investment product. However, the compliance findings indicate low readability, which breaches COBS 4.2.1R that mandates financial promotions to be clear, fair, and not misleading with appropriate language for the target audience.  
+Suggestion: Improve the clarity and readability of the KID by simplifying the language, using plain English, and organizing information to enhance understanding for potential investors.",Hallucination,0.6667,False,0.3,"The score is 0.67 because while the actual output correctly aligns with the context regarding the breach of COBS 4.2.1R, it fails to mention other key issues present in the context, specifically the missing crypto risk warning and appropriateness assessment disclosure, leading to partial but not full factual alignment."
+2026-04-15T18:56:03.578467,does this product comply with FCA guidelines,"Label: NON_COMPLIANT  
+Violations: [Low readability]  
+FCA Rules Breached: [COBS 4.2.1R]  
+Reason: The KID is intended to provide clear and understandable information about the investment product. However, the compliance findings indicate low readability, which breaches COBS 4.2.1R that mandates financial promotions to be clear, fair, and not misleading with appropriate language for the target audience.  
+Suggestion: Improve the clarity and readability of the KID by simplifying the language, using plain English, and organizing information to enhance understanding for potential investors.",Contextual Precision,0.0,False,0.7,"The score is 0.00 because all the top-ranked nodes in the retrieval contexts are irrelevant to the input. For example, the first node discusses the product's risk and prospectus disclosure but does not mention FCA guidelines, and the second node covers secondary market processes and fees without addressing FCA compliance. None of the nodes address the specific compliance question, so irrelevant nodes are ranked at the top, resulting in the lowest possible score."
+2026-04-15T18:56:03.578522,does this product comply with FCA guidelines,"Label: NON_COMPLIANT  
+Violations: [Low readability]  
+FCA Rules Breached: [COBS 4.2.1R]  
+Reason: The KID is intended to provide clear and understandable information about the investment product. However, the compliance findings indicate low readability, which breaches COBS 4.2.1R that mandates financial promotions to be clear, fair, and not misleading with appropriate language for the target audience.  
+Suggestion: Improve the clarity and readability of the KID by simplifying the language, using plain English, and organizing information to enhance understanding for potential investors.",Contextual Recall,0.0,False,0.7,"The score is 0.00 because none of the sentences in the expected output can be attributed to any node(s) in the retrieval context; there is no mention of non-compliance, 'guaranteed 10% annual returns', or FCA CONC 3.3.1R in any node."

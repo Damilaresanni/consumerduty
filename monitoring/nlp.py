@@ -699,15 +699,23 @@ def is_negated(text, start, end, negation_patterns):
 
     return False
 
+#builds a rule-based Nlp engine
 def build_phrase_matcher():
+    #loads the spacy model
     nlp = get_nlp()  
 
+    #initializes a phrase matcher with spaCy internal dictionary
     phrase_matcher = PhraseMatcher(nlp.vocab, attr="LOWER")
 
+    
     for rule in FCA_RULES:
+        #adds rule name to the language model dictionary
         nlp.vocab.strings.add(rule["name"])
 
+        #converts the keywords in the rule config to spaCy objects
         patterns = [nlp.make_doc(k) for k in rule["keywords"]]
+        
+        #inserts all the rule names into the phrase matcher
         phrase_matcher.add(rule["name"], patterns)
 
     return phrase_matcher
@@ -717,9 +725,12 @@ RULE_MAP = {r["name"]: r for r in FCA_RULES}
 
 
 def run_spacy_rules(text: str):
+    #loads the spaCy language model
     nlp = get_nlp()  
+    
     doc = nlp(text)
 
+    #initializes and builds the phrase_matcher
     phrase_matcher = build_phrase_matcher()
 
     findings = []

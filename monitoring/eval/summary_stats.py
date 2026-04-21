@@ -1,7 +1,7 @@
 import json
 import statistics
 
-with open("evals/eval_results.json") as f:
+with open("evals/eval_results_summary.json") as f:
     all_results = json.load(f)
 
 # Group scores by metric name

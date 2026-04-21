@@ -18,10 +18,12 @@ COLLECTION_NAME = "document_chunks"
 
 
 
-
+#function accepts three arguments to search for similar sentences 
 def search_similar_chunks(query:str,document_id: int ,top_k: int= 10,):
+    #converts the embedded query text an convert it into a list
     vector = list(embedder.embed([query]))[0]
-                  
+    
+    #retrieves specific vector data from the vector data store
     results = qdrant.query_points(
         collection_name=COLLECTION_NAME,
         query=vector,
@@ -33,6 +35,7 @@ def search_similar_chunks(query:str,document_id: int ,top_k: int= 10,):
         
         
     )
+    #returns the information about the retreived data
     return [
         {
             "score":point.score,
@@ -51,6 +54,7 @@ def rerank_chunks(query, chunks):
         return len(query_words & words)
 
     return sorted(chunks, key=score, reverse=True)
+
 
 def filter_findings(query, findings):
     query_words = set(query.lower().split())

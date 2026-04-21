@@ -1,0 +1,65 @@
+[
+  {
+    "timestamp": "2026-04-15T18:56:03.576726",
+    "input": "does this product comply with FCA guidelines",
+    "actual_output": "Label: NON_COMPLIANT  \nViolations: [Low readability]  \nFCA Rules Breached: [COBS 4.2.1R]  \nReason: The KID is intended to provide clear and understandable information about the investment product. However, the compliance findings indicate low readability, which breaches COBS 4.2.1R that mandates financial promotions to be clear, fair, and not misleading with appropriate language for the target audience.  \nSuggestion: Improve the clarity and readability of the KID by simplifying the language, using plain English, and organizing information to enhance understanding for potential investors.",
+    "expected_output": "NON_COMPLIANT. The phrase 'guaranteed 10% annual returns' violates FCA CONC 3.3.1R.",
+    "retrieval_context": [
+      "{'score': 0.6389521, 'text': \"The product can be expected to have large fluctuations due\\ncompared to other products.\\nIt shows how likely it is that the product will to the nature of the underlying asset class.\\nlose money because of movements in the markets or because the Issuer is\\nPlease refer to the product's Prospectus Disclosure for details of other unable to pay you.\\nmaterially relevant risks that may apply to this product.\", 'document_id': 67, 'chunk_index': 3}",
+      "{'score': 0.60567737, 'text': 'Secondary market investors deal directly with authorised participants or via an exchange and will pay\\nfees charged by their authorised participants or brokers respectively.\\nPlease refer to your broker, financial adviser, or distributor for the actual charges.\\nHow long should I hold it and can I take my money out early?\\nRecommended Holding Period: 1 year\\nThe recommended holding period for this product is 1 year.\\nHowever, as Bitcoin is highly volatile, investors should monitor the value of the product\\nconstantly as sudden changes in value will be frequent and abrupt.\\nA Bitcoin Security holder can sell the product on the regulated market on which it is listed, or in accordance with (and subject to) the terms of the\\nProspectus, may redeem the securities directly with the Issuer in return for an amount of Bitcoin equal to the aggregate Coin Entitlement of the Bitcoin\\nSecurities (less relevant fees and costs).\\nHow can I complain?\\nAny complaint about the sale of the product should be made to your intermediary or distributor.\\nA complaint about any other aspect of this product\\nsold (including, relating to the conduct of the Issuer) can be submitted to the Issuer in writing at the following address: 2nd Floor, 2 Hill Street, St.\\nHelier, Jersey JE2 4UA, or by email: physical@coinshares.com.\\nPlease see disclosures at the following website: https://coinshares.com/uk/disclosures/.\\nAny complaint shall be handled in line with the Issuer\u2019s normal process.\\nFurther details can be provided upon request.\\nMaking a complaint will not prejudice your right to take legal action.\\nOther relevant information\\nThis document may be updated from time to time.', 'document_id': 67, 'chunk_index': 13}",
+      "{'score': 0.60441947, 'text': 'This is deducted each day by a reduction in the Coin Entitlement. The management fee for\\nthis product is 0.15% per annum.\\nIncidental costs\\nPerformance fees 0% The impact of the performance fee.\\nThere is no performance fee for this product.\\nCarried interests 0% The impact of carried interests. There are no carried interests for this product.\\n* Not applicable for secondary market investors.', 'document_id': 67, 'chunk_index': 12}",
+      "{'score': 0.7423421, 'text': 'Applicants may also find Chapter 22 of The Joint Money Laundering\\nSteering Group guidance helpful.\\n5.6 Cryptoasset businesses and any person who is an officer, manager or beneficial owner\\nof the business will be subject to the fit and proper requirements under Regulation 58A\\nof the MLRs.\\nWe will take into account all relevant matters when assessing fitness and\\npropriety and we will consider whether the firm and its officers, managers or beneficial\\nowners have acted and may be expected to act with probity..\\n5.7 As part of our fitness and propriety assessment we will consider an applicant\u2019s previous\\nand/or planned financial promotions.\\nWe will also expect applicants to be able to show\\nhow they will comply with the financial promotions regime as part of their application.\\nFCA powers in relation to registered cryptoasset businesses\\ncommunicating financial promotions\\n5.8 The Financial Services and Markets Act 2000 (Financial Promotion) (Amendment)\\nOrder 2023 has created a new exemption (Article 73ZA) in the FPO.\\nThis exemption\\nallows registered cryptoasset businesses to communicate financial promotions for\\ncryptoassets without the need to have those promotions approved by an authorised\\nperson, subject to complying with the conditions of the exemption.', 'document_id': 64, 'chunk_index': 158}",
+      "{'score': 0.73870033, 'text': 'We will publish\\nour final rules in due course subject to the Bill completing the legislative process.\\n4.15 Authorised persons that want to approve cryptoasset financial promotions for\\nunauthorised persons will have to apply at the gateway for permission to do so once this\\nregime comes into force.\\nIncluded in our proposed requirements for applicants will be\\nto demonstrate that they have the necessary C&E in the financial products for which\\nthey want to approve promotions, and that they have adequate systems, controls and\\nprocesses to ensure compliance with our rules.\\n4.16 Under the draft provisions in the Bill, we would be able to refuse an application for\\npermission to approve promotions where we considered this desirable in order to\\nadvance any of our operational objectives.\\n4.17 We also proposed that applicants at the gateway be required to submit reports to us on\\ntheir approval activity:\\n\u2022 We have proposed to require approvers to submit a notification to us within 7 days\\nof approving a promotion.\\nThe notification metrics include the client name, the\\ntype of product being promoted and the size of the issuance (where applicable).\\n\u2022 We have also proposed to require a bi-annual report, which would include metrics\\nsuch as a firm\u2019s revenue from approval activity, and any complaints received related\\nto their approval activity.\\nThe Consumer Duty\\n4.18 In July 2022, the FCA published final rules (PS22/9) and guidance (FG22/5) for a\\nConsumer Duty (the Duty).\\nThis sets higher and clearer standards of retail consumer\\nprotection across financial services and requires firms to put their customers\u2019 needs\\nfirst.', 'document_id': 64, 'chunk_index': 145}",
+      "{'score': 0.73797363, 'text': 'In particular, authorised firms testing and monitoring activity should focus\\non whether communications, including promotions, support consumer understanding,\\ntaking into account consumer\u2019s informational needs, characteristics of vulnerability and\\nwhether there is scope for harm to retail customers.\\nOur Finalised Guidance on the Duty\\nincludes further information for firms on how to meet expectations in this area.\\n4.28 Where retail customers suffer harm as a result of a firm\u2019s acts or an omission, the firm\\nmust act in good faith and take appropriate action to remedy this, including by providing\\nredress where appropriate.\\nHowever, this does not apply where the harm identified was\\ncaused by risks inherent in a product, provided the firm has clearly communicated these\\nrisks and reasonably believed that retail customers understood and accepted those risks.\\nMLR registered businesses communicating cryptoassets financial\\npromotions\\n4.29 We are not proposing to apply the Consumer Duty to unauthorised MLR-registered\\nfirms communicating their own promotions at this point.\\nThe exemption that grants\\nthe FCA rule making powers over MLR registered cryptoasset businesses in relation\\nto financial promotions was intended to be a temporary and narrow exemption.', 'document_id': 64, 'chunk_index': 153}"
+    ],
+    "context": [
+      "Capital at risk warning missing with description Investment promotion detected without a capital-at-risk warning. based on FCA rule COBS 4.2.1R",
+      "Missing mandatory crypto risk warning with description Cryptoasset promotions must display the FCA prescribed risk warning introduced by PS23/6 in October 2023. based on FCA rule COBS 4.12A.4R / PS23/6 para 3.14",
+      "Missing appropriateness assessment disclosure with description PS23/6 requires firms to conduct and disclose an appropriateness assessment before a retail consumer can invest in cryptoassets. based on FCA rule COBS 10.1.2R / PS23/6 para 3.45"
+    ],
+    "metrics": [
+      {
+        "name": "Answer Relevancy",
+        "score": 1.0,
+        "threshold": 0.7,
+        "passed": true,
+        "reason": "The score is 1.00 because the answer was fully relevant and addressed the question directly, with no irrelevant statements. Great job staying focused and concise!"
+      },
+      {
+        "name": "Faithfulness",
+        "score": 1.0,
+        "threshold": 0.8,
+        "passed": true,
+        "reason": "The score is 1.00 because there are no contradictions\u2014great job staying true to the retrieval context!"
+      },
+      {
+        "name": "Compliance Accuracy [GEval]",
+        "score": 0.1896,
+        "threshold": 0.7,
+        "passed": false,
+        "reason": "The Actual Output correctly identifies a non-compliance label and cites an FCA rule (COBS 4.2.1R), but it fails to identify the specific violation ('guaranteed 10% annual returns') and does not cite the correct rule (CONC 3.3.1R) as in the Expected Output. The Actual Output instead focuses on low readability, which is not mentioned in the Expected Output, indicating a significant misalignment with the evaluation steps."
+      },
+      {
+        "name": "Hallucination",
+        "score": 0.6667,
+        "threshold": 0.3,
+        "passed": false,
+        "reason": "The score is 0.67 because while the actual output correctly aligns with the context regarding the breach of COBS 4.2.1R, it fails to mention other key issues present in the context, specifically the missing crypto risk warning and appropriateness assessment disclosure, leading to partial but not full factual alignment."
+      },
+      {
+        "name": "Contextual Precision",
+        "score": 0.0,
+        "threshold": 0.7,
+        "passed": false,
+        "reason": "The score is 0.00 because all the top-ranked nodes in the retrieval contexts are irrelevant to the input. For example, the first node discusses the product's risk and prospectus disclosure but does not mention FCA guidelines, and the second node covers secondary market processes and fees without addressing FCA compliance. None of the nodes address the specific compliance question, so irrelevant nodes are ranked at the top, resulting in the lowest possible score."
+      },
+      {
+        "name": "Contextual Recall",
+        "score": 0.0,
+        "threshold": 0.7,
+        "passed": false,
+        "reason": "The score is 0.00 because none of the sentences in the expected output can be attributed to any node(s) in the retrieval context; there is no mention of non-compliance, 'guaranteed 10% annual returns', or FCA CONC 3.3.1R in any node."
+      }
+    ]
+  }
+]

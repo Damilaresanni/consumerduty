@@ -25,21 +25,28 @@ from deepeval.metrics import (
     GEval
 )
 
+#celery decorator that assigns this document process function to a celery task
 @shared_task
 def process_document(document_id: int):
+    #gets the document object by the document id
     doc = Document.objects.get(id=document_id)
     
     try:
+        #query the document status and set it to processing
         doc.status = Document.Status.PROCCESSING
+        #save the current state of the document
         doc.save()
         
-        
+        #process the pdf using a custom function process_pdf
         text_blocks  = process_pdf(doc.file.path)
         
+        #adds a new line after every line in text_blocks
         text = "\n".join(block["content"] for block in text_blocks)
         
+        #performs nlp spacy rules on the retrieved texts
         findings = run_spacy_rules(text)
         
+        #runs a loop and create a new RuleBasedFinding object
         for f in findings:
             RuleBasedFinding.objects.create(
                 document=doc, 
@@ -52,12 +59,14 @@ def process_document(document_id: int):
                 snippet=f["snippet"],
             )
         
-        
+        #chunks the text using chunk_text function
         chunks = chunk_text(text)
         
-        
+        #calls the imported init_collection fucntion
         init_collection()
         
+        #loops through the text chunks and create
+        # DocumentChunk instance in the database
         for idx, chunk in enumerate(chunks):
             DocumentChunk.objects.create(
                 document=doc,
@@ -65,12 +74,17 @@ def process_document(document_id: int):
                 text=chunk,
             )
             
+            #calls the store_chunk_embedding that stores text embeddings in thr database
             store_chunk_embedding(doc, idx, chunk)
         
+        #access and change the status of the document to completed
         doc.status = Document.Status.COMPLETED
+        #save the new state of the document
         doc.save()
-                
+   
+   #excption block to catch unexpected errors
     except Exception as e:
+        #set the status of document processing to failed
         doc.status = Document.Status.FAILED
         doc.error_message = str(e)
         doc.save()
@@ -82,6 +96,7 @@ def process_document(document_id: int):
 
 @shared_task
 def evalFca(query,answer,chunks,findings):
+    try:
         test_case = LLMTestCase(
             input = query,
             actual_output=answer,
@@ -91,7 +106,7 @@ def evalFca(query,answer,chunks,findings):
            context = [
             f"{finding['rule_name']} with description {finding['description']} "
             f"based on FCA rule {finding['fca_rule_ref']}"
-            for finding in findings
+            for finding in findings[:3]
         ]
         
         )
@@ -139,9 +154,13 @@ def evalFca(query,answer,chunks,findings):
         save_eval_result(test_case, results, output)
         
 
+        return("success")
+
+        
+       
+        
+    except Exception as e:
         return {
-                "results":results,
-                "output":output,
-                "status": "completed"
-            }
-  
+            "status": "failed",
+            "error": str(e)  
+        }

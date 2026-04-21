@@ -61,15 +61,16 @@ class ConsumerDutyReview(BaseModel):
         return f"{self.product.product_name} Review"
 
 
-
+#This is class declaration creates a database table document
 class Document(BaseModel):
+    #creates meta data for the document process status during ingestion
     class Status(models.TextChoices):
         PENDING = "pending" , "Pending"
         PROCCESSING = "processing", "Processing"
         COMPLETED = "completed", "Completed"
         FAILED = "failed", "Failed"
-        
-        
+    
+    #this sets the characteristics of each field on the database table
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="documents", null=True, blank=True)
     title = models.CharField(max_length=255)    
     file = models.FileField(upload_to="uploads/%y/%m/%d/")
